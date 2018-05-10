@@ -1,0 +1,30 @@
+/**
+*
+* Footer
+*
+*/
+
+import React from 'react';
+// import styled from 'styled-components';
+
+
+class Footer extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  render() {
+    return (
+      <footer>
+        <div className="container">
+          <a href="/" className="logo-font">conduit</a>
+          <span className="attribution">
+            An interactive learning project from <a href="https://thinkster.io">Thinkster</a>. Code &amp; design licensed under MIT.
+          </span>
+        </div>
+      </footer>
+    );
+  }
+}
+
+Footer.propTypes = {
+
+};
+
+export default Footer;
