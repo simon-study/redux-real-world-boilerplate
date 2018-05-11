@@ -10,8 +10,6 @@
  */
 
 import React from 'react';
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
 import { Switch, Route } from 'react-router-dom';
 import HeaderLogout from '../../components/HeaderLogout';
 import Footer from '../../components/Footer';
@@ -19,7 +17,7 @@ import Home from '../../components/Home';
 import SignIn from '../../components/SignIn';
 import ArticleDetailContainer from '../ArticleDetailContainer';
 
-export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export default class HomePage extends React.Component {
   render() {
     return (
       <div>
