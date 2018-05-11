@@ -6,6 +6,7 @@
 
 import { fromJS } from 'immutable';
 import {
+  RESET_ARTICLE,
   FETCH_ARTICLE_DETAIL_SUCCESS,
   FETCH_ARTICLE_DETAIL_FAILURE,
 } from './constants';
@@ -21,6 +22,8 @@ function articleDetailContainerReducer(state = initialState, action) {
       return state.set('article', action.payload.article);
     case FETCH_ARTICLE_DETAIL_FAILURE:
       return state.set('error', action.payload.error);
+    case RESET_ARTICLE:
+      return state.set('article', {});
     default:
       return state;
   }

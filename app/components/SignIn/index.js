@@ -28,19 +28,22 @@ class SignIn extends React.Component { // eslint-disable-line react/prefer-state
                     <input
                       className="form-control form-control-lg"
                       type="email"
-                      placeholder="Email" />
+                      placeholder="Email"
+                    />
                   </fieldset>
 
                   <fieldset className="form-group">
                     <input
                       className="form-control form-control-lg"
                       type="password"
-                      placeholder="Password" />
+                      placeholder="Password"
+                    />
                   </fieldset>
 
                   <button
                     className="btn btn-lg btn-primary pull-xs-right"
-                    type="submit">
+                    type="submit"
+                  >
                     Sign in
                   </button>
                 </fieldset>

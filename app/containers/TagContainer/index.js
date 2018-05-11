@@ -7,37 +7,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectTagContainer from './selectors';
+import makeSelectTagContainer, { selectTags } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 import PopularTags from '../../components/PopularTags';
 
-export class TagContainer extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class TagContainer extends React.Component {
   componentWillMount() {
-    this.props.fetchTags()
+    this.props.fetchTags();
   }
 
   render() {
     return (
-      <PopularTags tags={this.props.tags.tags}/>
+      <PopularTags tags={this.props.tags} />
     );
   }
 }
 
 TagContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  fetchTags: PropTypes.func.isRequired,
+  tags: PropTypes.any.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  tags: makeSelectTagContainer(),
+  TagContainer: makeSelectTagContainer(),
+  tags: selectTags(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -48,8 +47,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
-
-const withReducer = injectReducer({ key: 'tags', reducer });
+const withReducer = injectReducer({ key: 'TagContainer', reducer });
 const withSaga = injectSaga({ key: 'watcherfetchTags', saga });
 
 export default compose(

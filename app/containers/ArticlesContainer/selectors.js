@@ -3,8 +3,7 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the test state domain
  */
-const getArticles = (state) => state.get('articles');
-
+const selectArticlesContainerDomain = (state) => state.get('articlesContainer');
 /**
  * Other specific selectors
  */
@@ -14,12 +13,30 @@ const getArticles = (state) => state.get('articles');
  * Default selector used by Test
  */
 
-const makeSelectTest = () => createSelector(
-  getArticles,
+const makeSelectArticlesContainer = () => createSelector(
+  selectArticlesContainerDomain,
   (substate) => substate.toJS()
 );
 
-export default makeSelectTest;
+const selectArticles = () => createSelector(
+  selectArticlesContainerDomain,
+  (substate) => substate.get('articles')
+);
+
+const selectArticlesCount = () => createSelector(
+  selectArticlesContainerDomain,
+  (substate) => substate.get('articlesCount')
+);
+
+const selectCurrentPage = () => createSelector(
+  selectArticlesContainerDomain,
+  (substate) => substate.get('currentPage')
+);
+
+export default makeSelectArticlesContainer;
 export {
-  getArticles,
+  selectArticlesContainerDomain,
+  selectArticles,
+  selectArticlesCount,
+  selectCurrentPage,
 };

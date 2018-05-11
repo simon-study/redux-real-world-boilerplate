@@ -22,7 +22,7 @@ export default function App() {
     <div>
       <Switch>
         <Route path="/" component={HomePage} />
-        <Route component={NotFoundPage} />  
+        <Route component={NotFoundPage} />
       </Switch>
     </div>
   );

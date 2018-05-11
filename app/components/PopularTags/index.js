@@ -5,32 +5,37 @@
 */
 
 import React from 'react';
-// import styled from 'styled-components';
-
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-class PopularTags extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class PopularTags extends React.Component {
   render() {
+    if (!this.props.tags.length) {
+      return (
+        <div><FormattedMessage {...messages.loading} /></div>
+      );
+    }
+
     return (
       <div className="sidebar">
-        <p><FormattedMessage {...messages.title}/></p>
-          <div className="tag-list">
-            {
-              this.props.tags.length ? this.props.tags.map((tag, index) => {
-                return (
-                  <a key={index} href="" className="tag-pill tag-default">{tag}</a>
-                )
-              }) : <div><FormattedMessage {...messages.loading}/></div>
-            }
-        </div> 
+        <p><FormattedMessage {...messages.title} /></p>
+        <div className="tag-list">
+          {
+            this.props.tags.map(tag => {
+              return (
+                <a key={tag} href="" className="tag-pill tag-default">{tag}</a>
+              );
+            })
+          }
+        </div>
       </div>
     );
   }
 }
 
 PopularTags.propTypes = {
-
+  tags: PropTypes.any.isRequired,
 };
 
 export default PopularTags;

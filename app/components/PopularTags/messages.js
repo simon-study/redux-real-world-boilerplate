@@ -15,9 +15,9 @@ export default defineMessages({
     id: 'app.components.PopularTags.title',
     defaultMessage: 'Popular Tags',
   },
-  
+
   loading: {
     id: 'app.components.PopularTags.loading',
     defaultMessage: 'Loading tags...',
-  }
+  },
 });

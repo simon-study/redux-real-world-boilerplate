@@ -5,11 +5,19 @@
  */
 
 import {
-  DEFAULT_ACTION,
+  RESET_ARTICLE,
+  FETCH_ARTICLE_DETAIL,
 } from './constants';
 
-export function defaultAction() {
+export function fetchArticleDetail(slug) {
   return {
-    type: DEFAULT_ACTION,
-  };
+    type: FETCH_ARTICLE_DETAIL,
+    slug,
+  }
+}
+
+export function resetArticle() {
+  return {
+    type: RESET_ARTICLE,
+  }
 }

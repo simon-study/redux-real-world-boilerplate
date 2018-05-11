@@ -12,41 +12,49 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectArticleDetailContainer from './selectors';
+import makeSelectArticleDetailContainer, { selectArticleDetails } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import ArticleDetail from '../../components/ArticleDetail';
+import { resetArticle, fetchArticleDetail } from './actions';
 
 export class ArticleDetailContainer extends React.Component {
   componentWillMount() {
     this.props.fetchArticleDetail(this.props.match.params.slug);
   }
+
+  componentWillUnmount() {
+    this.props.resetArticle()
+  }
+
   render() {
-    const { article } = this.props.article;
     return (
-      <ArticleDetail article={article}/>
+      <ArticleDetail article={this.props.articleDetailContainer.article} />
     );
   }
 };
 
 ArticleDetailContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  fetchArticleDetail: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
+  // article: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  article: makeSelectArticleDetailContainer(),
+  articleDetailContainer: makeSelectArticleDetailContainer(),
+  article: selectArticleDetails(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchArticleDetail: (slug) => dispatch({ type: 'FETCH_ARTICLE_DETAIL', slug }),
+    fetchArticleDetail: (slug) => dispatch(fetchArticleDetail(slug)),
+    resetArticle: () => dispatch(resetArticle()),
     dispatch,
   };
 }
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
-
-const withReducer = injectReducer({ key: 'article', reducer });
+const withReducer = injectReducer({ key: 'articleDetailContainer', reducer });
 const withSaga = injectSaga({ key: 'articleDetailContainer', saga });
 
 export default compose(
