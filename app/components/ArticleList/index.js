@@ -6,9 +6,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 class ArticleList extends React.Component {
+  onToggleFavorite = () => {
+
+  }
+
   render() {
     if (!this.props.articles.length) {
       return (
@@ -19,23 +23,23 @@ class ArticleList extends React.Component {
     return (
       <div>
         {
-          this.props.articles.map(article => {
+          this.props.articles.map((article) => {
             return (
               <div key={article.slug} className="article-preview">
                 <div className="article-meta">
-                  <a href="profile.html">
+                  <NavLink to="/profile">
                     <img alt={article.author.username} src={article.author.image} />
-                  </a>
+                  </NavLink>
                   <div className="info">
-                    <a href="" className="author">{article.author.username}</a>
+                    <NavLink to="/profile" className="author">{article.author.username}</NavLink>
                     <span className="date">{new Date(article.createdAt).toDateString()}</span>
                   </div>
-                  <button className="btn btn-outline-primary btn-sm pull-xs-right">
+                  <button className="btn btn-outline-primary btn-sm pull-xs-right" onClick={this.onToggleFavorite}>
                     <i className="ion-heart"></i> {article.favoritesCount}
                   </button>
                 </div>
 
-                <Link to={`/article/${article.slug}`} className="preview-link">
+                <NavLink to={`/article/${article.slug}`} className="preview-link">
                   <h1>{article.title}</h1>
                   <p>{article.description}</p>
                   <span>Read more...</span>
@@ -52,7 +56,7 @@ class ArticleList extends React.Component {
                       }
                     </ul>
                   }
-                </Link>
+                </NavLink>
               </div>
             );
           })

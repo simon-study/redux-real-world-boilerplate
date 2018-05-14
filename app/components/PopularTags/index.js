@@ -22,9 +22,9 @@ class PopularTags extends React.Component {
         <p><FormattedMessage {...messages.title} /></p>
         <div className="tag-list">
           {
-            this.props.tags.map(tag => {
+            this.props.tags.map((tag) => {
               return (
-                <a key={tag} href="" className="tag-pill tag-default">{tag}</a>
+                <a key={this.props.tag} href="" className="tag-pill tag-default">{this.props.tag}</a>
               );
             })
           }

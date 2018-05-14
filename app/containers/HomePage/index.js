@@ -1,36 +1,36 @@
-// /*
-//  * HomePage
-//  *
-//  * This is the first thing users see of our App, at the '/' route
-//  *
-//  * NOTE: while this component should technically be a stateless functional
-//  * component (SFC), hot reloading does not currently support SFCs. If hot
-//  * reloading is not a necessity for you then you can refactor it and remove
-//  * the linting exception.
-//  */
+/*
+ * HomePage
+ *
+ * This is the first thing users see of our App, at the '/' route
+ *
+ * NOTE: while this component should technically be a stateless functional
+ * component (SFC), hot reloading does not currently support SFCs. If hot
+ * reloading is not a necessity for you then you can refactor it and remove
+ * the linting exception.
+ */
 
-// import React from 'react';
-// import { Switch, Route } from 'react-router-dom';
-// import HeaderLogout from '../../components/HeaderLogout';
-// import Footer from '../../components/Footer';
-// import Home from '../../components/Home';
-// import SigninComponent, { SignInComponent } from '../SignInComponent';
-// import SignUp from '../../components/SignUp';
-// import ArticleDetailContainer from '../ArticleDetailContainer';
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import SignIn from '../../components/SignIn';
+import SignUp from '../../components/SignUp';
+import MainHomepage from '../../components/MainHomepage';
+import ArticleDetailContainer from '../ArticleDetailContainer';
 
-// export default class HomePage extends React.Component {
-//   render() {
-//     return (
-//       <div>
-//         <HeaderLogout />
-//         <Switch>
-//           <Route exact path="/" component={Home} />
-//           <Route path="/signin" component={SignInComponent} />
-//           <Route path="/signup" component={SignUp} />
-//           <Route path="/article/:slug" component={ArticleDetailContainer} />
-//         </Switch>
-//         <Footer />
-//       </div>
-//     );
-//   }
-// }
+export default class HomePage extends React.Component {
+  render() {
+    return (
+      <div>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={MainHomepage} />
+          <Route path="/signin" component={SignIn} />
+          <Route path="/signup" component={SignUp} />
+          <Route path="/article/:slug" component={ArticleDetailContainer} />
+        </Switch>
+        <Footer />
+      </div>
+    );
+  }
+}
