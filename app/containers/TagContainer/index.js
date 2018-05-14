@@ -16,6 +16,7 @@ import makeSelectTagContainer, { selectTags } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import PopularTags from '../../components/PopularTags';
+import { fetchListArticlesTag } from './actions';
 
 export class TagContainer extends React.Component {
   componentWillMount() {
@@ -24,7 +25,10 @@ export class TagContainer extends React.Component {
 
   render() {
     return (
-      <PopularTags tags={this.props.tags} />
+      <PopularTags
+        tags={this.props.tags}
+        fetchListArticlesTag={(tag) => this.props.fetchListArticlesTag(tag)}
+      />
     );
   }
 }
@@ -42,13 +46,14 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     fetchTags: () => dispatch({ type: 'FETCH_TAGS' }),
+    fetchListArticlesTag: (tag) => dispatch({ type: 'FETCH_ARTICLES_TAGS', tag }),
     dispatch,
   };
 }
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 const withReducer = injectReducer({ key: 'TagContainer', reducer });
-const withSaga = injectSaga({ key: 'watcherfetchTags', saga });
+const withSaga = injectSaga({ key: 'root', saga });
 
 export default compose(
   withReducer,

@@ -3,3 +3,4 @@ export const DAEMON = '@@saga-injector/daemon';
 export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';
 export const API_ROOT = 'https://conduit.productionready.io/api';
 export const DEFAULT_LIMIT = 10;
+export const DEFAULT_OFFSET = 0;

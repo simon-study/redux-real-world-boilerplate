@@ -10,6 +10,11 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 class PopularTags extends React.Component {
+  hanldeShowArticleTag = (e, tag) => {
+    e.preventDefault();
+    this.props.fetchListArticlesTag(tag);
+  }
+
   render() {
     if (!this.props.tags.length) {
       return (
@@ -24,7 +29,7 @@ class PopularTags extends React.Component {
           {
             this.props.tags.map((tag) => {
               return (
-                <a key={this.props.tag} href="" className="tag-pill tag-default">{this.props.tag}</a>
+                <a key={tag} href="" className="tag-pill tag-default" onClick={(e) => this.hanldeShowArticleTag(e, tag)}>{tag}</a>
               );
             })
           }

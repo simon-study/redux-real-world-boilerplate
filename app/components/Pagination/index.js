@@ -9,7 +9,7 @@ import { FormattedMessage } from 'react-intl';
 import React from 'react';
 import messages from './messages';
 
-class Pagination extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class Pagination extends React.Component {
   handleSetPage = (e, page) => {
     e.preventDefault();
     this.props.setPage(page);
@@ -34,7 +34,7 @@ class Pagination extends React.Component { // eslint-disable-line react/prefer-s
           paginationList.map((page) => {
             return (
               <li key={page} className={this.props.currentPage === page ? 'page-item active' : 'page-item'} onClick={(e) => this.handleSetPage(e, page)}>
-                <a className="page-link" href="">{page + 1}</a>
+                <a className="page-link" title={`Page ${page}`} href="">{page + 1}</a>
               </li>
             );
           })

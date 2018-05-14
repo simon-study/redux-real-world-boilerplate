@@ -4,14 +4,6 @@ import { createSelector } from 'reselect';
  * Direct selector to the test state domain
  */
 const selectArticlesContainerDomain = (state) => state.get('articlesContainer');
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by Test
- */
 
 const makeSelectArticlesContainer = () => createSelector(
   selectArticlesContainerDomain,
@@ -33,10 +25,22 @@ const selectCurrentPage = () => createSelector(
   (substate) => substate.get('currentPage')
 );
 
+const selectTags = () => createSelector(
+  selectArticlesContainerDomain,
+  (substate) => substate.get('tags')
+);
+
+const selectArticlesTag = () => createSelector(
+  selectArticlesContainerDomain,
+  (substate) => substate.get('articlesTag')
+);
+
 export default makeSelectArticlesContainer;
 export {
   selectArticlesContainerDomain,
   selectArticles,
   selectArticlesCount,
   selectCurrentPage,
+  selectTags,
+  selectArticlesTag,
 };

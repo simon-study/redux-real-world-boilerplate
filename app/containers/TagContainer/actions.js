@@ -5,11 +5,12 @@
  */
 
 import {
-  DEFAULT_ACTION,
+  FETCH_ARTICLES_TAGS,
 } from './constants';
 
-export function defaultAction() {
+export function fetchListArticlesTag(tag) {
   return {
-    type: DEFAULT_ACTION,
-  };
+    type: 'FETCH_ARTICLES_TAGS',
+    tag,
+  }
 }
