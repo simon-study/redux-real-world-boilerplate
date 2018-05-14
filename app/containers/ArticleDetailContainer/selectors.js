@@ -15,8 +15,14 @@ const selectArticleDetails = () => createSelector(
   (substate) => substate.article
 );
 
+const selectComments = () => createSelector(
+  makeSelectArticleDetailContainer(),
+  (substate) => substate.comments
+);
+
 export default makeSelectArticleDetailContainer;
 export {
   selectArticleDetailContainerDomain,
   selectArticleDetails,
+  selectComments,
 };

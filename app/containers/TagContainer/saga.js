@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { put, takeEvery } from 'redux-saga/effects';
+import { takeEvery, call, put } from 'redux-saga/effects';
+import { getTags } from '../../utils/api';
 
 export default function* watcherfetchTags() {
   yield takeEvery('FETCH_TAGS', watcherFetchTags);
@@ -7,10 +7,7 @@ export default function* watcherfetchTags() {
 
 function* watcherFetchTags() {
   try {
-    const response = yield axios({
-      method: 'GET',
-      url: 'https://conduit.productionready.io/api/tags',
-    });
+    const response = yield call(getTags);
     yield put({ type: 'FETCH_TAGS_SUCCESS', payload: response.data });
   } catch (error) {
     yield put({ type: 'FETCH_TAGS_FAILURE', payload: error });

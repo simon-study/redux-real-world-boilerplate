@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { takeEvery, put } from 'redux-saga/effects';
+import { takeEvery, put, call } from 'redux-saga/effects';
+import { getArticles } from '../../utils/api';
 
 const DEFAULT_LIMIT = 10;
 
@@ -10,10 +11,7 @@ export default function* watcherFetchArticles() {
 
 function* fetchArticles() {
   try {
-    const response = yield axios({
-      method: 'GET',
-      url: `https://conduit.productionready.io/api/articles?limit=${DEFAULT_LIMIT}`,
-    });
+    const response = yield call(getArticles);
     yield put({
       type: 'FETCH_DATA_SUCCESS',
       payload: response.data,
