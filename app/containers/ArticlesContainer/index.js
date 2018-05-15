@@ -83,6 +83,7 @@ ArticlesContainer.propTypes = {
   resetTagName: PropTypes.func.isRequired,
   tagName: PropTypes.string.isRequired,
   fetchListArticlesTag: PropTypes.func.isRequired,
+  tags: PropTypes.any.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

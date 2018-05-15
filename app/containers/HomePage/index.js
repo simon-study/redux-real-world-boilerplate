@@ -18,19 +18,17 @@ import SignUp from '../../components/SignUp';
 import MainHomepage from '../../components/MainHomepage';
 import ArticleDetailContainer from '../ArticleDetailContainer';
 
-export default class HomePage extends React.Component {
-  render() {
-    return (
-      <div>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={MainHomepage} />
-          <Route path="/signin" component={SignIn} />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/article/:slug" component={ArticleDetailContainer} />
-        </Switch>
-        <Footer />
-      </div>
-    );
-  }
-}
+const HomePage = () => (
+  <div>
+    <Header />
+    <Switch>
+      <Route exact path="/" component={MainHomepage} />
+      <Route path="/signin" component={SignIn} />
+      <Route path="/signup" component={SignUp} />
+      <Route path="/article/:slug" component={ArticleDetailContainer} />
+    </Switch>
+    <Footer />
+  </div>
+);
+
+export default HomePage;

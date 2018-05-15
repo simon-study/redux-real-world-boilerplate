@@ -41,6 +41,7 @@ class PopularTags extends React.Component {
 
 PopularTags.propTypes = {
   tags: PropTypes.any.isRequired,
+  fetchListArticlesTag: PropTypes.func.isRequired,
 };
 
 export default PopularTags;
