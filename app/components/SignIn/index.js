@@ -6,11 +6,32 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-// import styled from 'styled-components';
 
 class SignIn extends React.Component {
-  onChangePassword = () => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
 
+  onChangeEmail = (e) => {
+    this.setState({
+      email: e.target.value
+    })
+  }
+  
+  onChangePassword = (e) => {
+    this.setState({
+      password: e.target.value
+    })    
+  }
+
+  onSubmitLogin = (e) => {
+    e.preventDefault();
+    const { email, password } = this.state;
+    this.props.handleLogin(email, password);
   }
 
   render() {
@@ -26,13 +47,15 @@ class SignIn extends React.Component {
                 </NavLink>
               </p>
 
-              <form>
+              <form onSubmit={(e) => this.onSubmitLogin(e)}>
                 <fieldset>
                   <fieldset className="form-group">
                     <input
                       className="form-control form-control-lg"
                       type="email"
                       placeholder="Email"
+                      value={this.state.email}
+                      onChange={(e) => this.onChangeEmail(e)}
                     />
                   </fieldset>
 
@@ -41,13 +64,14 @@ class SignIn extends React.Component {
                       className="form-control form-control-lg"
                       type="password"
                       placeholder="Password"
-                      onChange={this.onChangePassword}
+                      value={this.state.password}
+                      onChange={(e) => this.onChangePassword(e)}
                     />
                   </fieldset>
 
                   <button
                     className="btn btn-lg btn-primary pull-xs-right"
-                    type="submit"
+                    type="submit"                    
                   >
                     Sign in
                   </button>

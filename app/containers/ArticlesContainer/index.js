@@ -14,9 +14,9 @@ import injectReducer from 'utils/injectReducer';
 import makeSelectArticlesContainer, {
   selectArticles, selectArticlesCount,
   selectCurrentPage, selectTags,
-  // selectArticlesTag,
   selectTagName,
 } from './selectors';
+import { selectLoggedIn } from '../LoginContainer/selectors';
 import {
   fetchTags, fetchData,
   setPage, fetchListArticlesTag, resetTagName,
@@ -26,6 +26,8 @@ import saga from './saga';
 import ArticleList from '../../components/ArticleList';
 import Pagination from '../../components/Pagination';
 import PopularTags from '../../components/PopularTags';
+
+import { makeAuth } from './selectors';
 
 export class ArticlesContainer extends React.Component {
   componentWillMount() {
@@ -40,6 +42,8 @@ export class ArticlesContainer extends React.Component {
   }
 
   render() {
+    console.log(this.props)
+    // console.log(this.props);
     return (
       <div className="row">
         <div className="col-md-9">
@@ -93,6 +97,8 @@ const mapStateToProps = createStructuredSelector({
   currentPage: selectCurrentPage(),
   tags: selectTags(),
   tagName: selectTagName(),
+  auth: makeAuth()
+  // loggedIn: selectLoggedIn(),
 });
 
 function mapDispatchToProps(dispatch) {

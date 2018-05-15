@@ -14,6 +14,7 @@ import { Switch, Route } from 'react-router-dom';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import SignIn from '../../components/SignIn';
+import LoginContainer from '../../containers/LoginContainer';
 import SignUp from '../../components/SignUp';
 import MainHomepage from '../../components/MainHomepage';
 import ArticleDetailContainer from '../ArticleDetailContainer';
@@ -23,7 +24,7 @@ const HomePage = () => (
     <Header />
     <Switch>
       <Route exact path="/" component={MainHomepage} />
-      <Route path="/signin" component={SignIn} />
+      <Route path="/signin" component={LoginContainer} />
       <Route path="/signup" component={SignUp} />
       <Route path="/article/:slug" component={ArticleDetailContainer} />
     </Switch>
