@@ -22,5 +22,9 @@ export function getComments(slug) {
 }
 
 export function getArticlesWithTag(tag) {
-  return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}&offset=${DEFAULT_OFFSET}&tag=${tag}`)
+  return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}&offset=${DEFAULT_OFFSET}&tag=${tag}`);
+}
+
+export function getArticlesWithOffset(page) {
+  return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}&offset=${DEFAULT_LIMIT * page}`);
 }

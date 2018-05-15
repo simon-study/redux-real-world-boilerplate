@@ -14,13 +14,17 @@ import injectReducer from 'utils/injectReducer';
 import makeSelectArticlesContainer, {
   selectArticles, selectArticlesCount,
   selectCurrentPage, selectTags,
-  selectArticlesTag,
+  // selectArticlesTag,
+  selectTagName,
 } from './selectors';
+import {
+  fetchTags, fetchData,
+  setPage, fetchListArticlesTag, resetTagName,
+} from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import ArticleList from '../../components/ArticleList';
 import Pagination from '../../components/Pagination';
-import TagContainer from '../../containers/TagContainer';
 import PopularTags from '../../components/PopularTags';
 
 export class ArticlesContainer extends React.Component {
@@ -32,6 +36,7 @@ export class ArticlesContainer extends React.Component {
   onClickTab = (e) => {
     e.preventDefault();
     this.props.fetchData();
+    this.props.resetTagName();
   }
 
   render() {
@@ -41,14 +46,14 @@ export class ArticlesContainer extends React.Component {
           <div className="feed-toggle">
             <ul className="nav nav-pills outline-active">
               <li className="nav-item">
-                <a className="nav-link active" href="" onClick={(e) => this.onClickTab(e)}>Global Feed</a>
+                <a className={this.props.tagName ? 'nav-link' : 'nav-link active'} href="" onClick={(e) => this.onClickTab(e)}>Global Feed</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" href="">#tagname</a>
-              </li>    
+                <a className={this.props.tagName ? 'nav-link active' : 'nav-link'} href="">{this.props.tagName && `#${this.props.tagName}`}</a>
+              </li>
             </ul>
           </div>
-          
+
           <ArticleList articles={this.props.articles} />
           <Pagination
             articlesCount={this.props.articlesCount}
@@ -58,7 +63,7 @@ export class ArticlesContainer extends React.Component {
         </div>
 
         <div className="col-md-3">
-           <PopularTags
+          <PopularTags
             tags={this.props.tags}
             fetchListArticlesTag={(tag) => this.props.fetchListArticlesTag(tag)}
           />
@@ -74,6 +79,10 @@ ArticlesContainer.propTypes = {
   articles: PropTypes.any.isRequired,
   currentPage: PropTypes.number.isRequired,
   articlesCount: PropTypes.number.isRequired,
+  fetchTags: PropTypes.func.isRequired,
+  resetTagName: PropTypes.func.isRequired,
+  tagName: PropTypes.string.isRequired,
+  fetchListArticlesTag: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -82,15 +91,16 @@ const mapStateToProps = createStructuredSelector({
   articlesCount: selectArticlesCount(),
   currentPage: selectCurrentPage(),
   tags: selectTags(),
-  // articlesTag: selectArticlesTag(),
+  tagName: selectTagName(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchTags: () => dispatch({ type: 'FETCH_TAGS' }),
-    fetchData: () => dispatch({ type: 'FETCH_DATA' }),
-    setPage: (page) => dispatch({ type: 'FETCH_ARTICLES_OFFSET', page }),
-    fetchListArticlesTag: (tag) => dispatch({ type: 'FETCH_ARTICLES_TAGS', tag }),
+    fetchTags: () => dispatch(fetchTags()),
+    fetchData: () => dispatch(fetchData()),
+    setPage: (page) => dispatch(setPage(page)),
+    fetchListArticlesTag: (tag) => dispatch(fetchListArticlesTag(tag)),
+    resetTagName: () => dispatch(resetTagName()),
     dispatch,
   };
 }

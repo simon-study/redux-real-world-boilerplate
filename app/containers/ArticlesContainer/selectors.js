@@ -35,6 +35,11 @@ const selectArticlesTag = () => createSelector(
   (substate) => substate.get('articlesTag')
 );
 
+const selectTagName = () => createSelector(
+  selectArticlesContainerDomain,
+  (substate) => substate.get('tagName')
+);
+
 export default makeSelectArticlesContainer;
 export {
   selectArticlesContainerDomain,
@@ -43,4 +48,5 @@ export {
   selectCurrentPage,
   selectTags,
   selectArticlesTag,
+  selectTagName,
 };
