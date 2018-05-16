@@ -45,7 +45,7 @@ export default function createReducer(injectedReducers) {
     route: routeReducer,
     language: languageProviderReducer,
     auth: loginContainerReducer,
-    loginContainerReducer, 
+    loginContainerReducer,
     ...injectedReducers,
   });
 }

@@ -13,12 +13,12 @@ const makeSelectLoginContainer = () => createSelector(
 const selectLoggedIn = () => createSelector(
   selectLoginContainerDomain,
   (substate) => substate.get('loggedIn')
-)
+);
 
 const selectErrors = () => createSelector(
   selectLoginContainerDomain,
   (substate) => substate.errors
-)
+);
 
 export default makeSelectLoginContainer;
 export {

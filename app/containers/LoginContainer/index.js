@@ -7,35 +7,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { Redirect } from 'react-router-dom';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import makeSelectLoginContainer, { selectLoggedIn, selectErrors } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 import SignIn from '../../components/SignIn';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  withRouter
-} from "react-router-dom";
 
 export class LoginContainer extends React.Component {
   render() {
-    const from = { pathname: "/" };
     if (this.props.loggedIn) {
-      return <Redirect to={from} />;
+      return <Redirect to={'/'} />;
     }
-    
+
     return (
-      <SignIn 
+      <SignIn
         handleLogin={(email, password) => this.props.handleLogin(email, password)}
         errors={this.props.logincontainer.errors}
       />
@@ -44,7 +34,9 @@ export class LoginContainer extends React.Component {
 }
 
 LoginContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+  handleLogin: PropTypes.func.isRequired,
+
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -55,10 +47,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    handleLogin: (email, password) => dispatch({ 
-      type: 'LOGIN_REQUEST', 
+    handleLogin: (email, password) => dispatch({
+      type: 'LOGIN_REQUEST',
       users: {
-        email, 
+        email,
         password,
       },
     }),
@@ -66,7 +58,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps, null, {pure: false});
+const withConnect = connect(mapStateToProps, mapDispatchToProps, null, { pure: false });
 const withReducer = injectReducer({ key: 'loginContainer', reducer });
 const withSaga = injectSaga({ key: 'loginContainer', saga });
 

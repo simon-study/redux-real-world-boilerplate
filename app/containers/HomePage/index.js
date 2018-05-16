@@ -11,9 +11,7 @@
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import SignIn from '../../components/SignIn';
 import LoginContainer from '../../containers/LoginContainer';
 import SignUp from '../../components/SignUp';
 import MainHomepage from '../../components/MainHomepage';

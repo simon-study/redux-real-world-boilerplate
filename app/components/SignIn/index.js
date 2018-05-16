@@ -12,13 +12,11 @@ class SignIn extends React.Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
-    }
+      password: '',
+    };
   }
 
-  isEmpty = (obj) => {
-    return Object.keys(obj).length === 0;
-  };
+  isEmpty = (obj) => Object.keys(obj).length === 0;
 
   onChangeEmail = (e) => {
     this.setState({

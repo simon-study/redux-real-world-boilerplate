@@ -14,10 +14,10 @@ const makeSelectSettingsContainer = () => createSelector(
 const makeSelectLoggedIn = () => createSelector(
   selectLoginContainerDomain,
   (substate) => substate.toJS()
-)
+);
 
 export default makeSelectSettingsContainer;
 export {
   selectSettingsContainerDomain,
-  makeSelectLoggedIn
+  makeSelectLoggedIn,
 };

@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
  * Direct selector to the headerContainer state domain
  */
 const selectHeaderContainerDomain = (state) => state.get('headerContainer');
-const selectAuth = (state) => state.get('auth')
+const selectAuth = (state) => state.get('auth');
 
 const makeSelectHeaderContainer = () => createSelector(
   selectHeaderContainerDomain,
@@ -19,5 +19,5 @@ const makeSelectAuth = () => createSelector(
 export default makeSelectHeaderContainer;
 export {
   selectHeaderContainerDomain,
-  makeSelectAuth
+  makeSelectAuth,
 };
