@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the test state domain
  */
+
 const selectArticlesContainerDomain = (state) => state.get('articlesContainer');
 const selectAuth = (state) => state.get('auth');
 

@@ -7,7 +7,6 @@ export default function* defaultSaga() {
 }
 
 function* workerSubmitLoginForm(action) {
-  console.log(action.users);
   try {
     const response = yield axios({
       method: 'POST',
@@ -19,6 +18,7 @@ function* workerSubmitLoginForm(action) {
         }
       },
     });
+    window.localStorage.setItem('token', response.data.user.token);
     yield put({ type: 'LOGIN_SUCCESS', payload: response.data.user })
   } catch (error) {
     yield put({ type: 'LOGIN_FAILURE', payload: error })

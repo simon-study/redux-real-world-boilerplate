@@ -11,21 +11,18 @@ import { fromJS } from 'immutable';
 // } from './constants';
 
 const initialState = fromJS({
-  user: {},
-  error: null,
-  loggedIn: false,
+  errors: {},
+  loggedIn: window.localStorage.getItem('token') ? true : false,
 });
 
 function loginContainerReducer(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
-      if (action.payload && action.payload.token) {
-        window.localStorage.setItem('token', action.payload.token)
-      }
-      return state.set('user', action.payload.user)
-                  .set('loggedIn', true);
+      return state.set('loggedIn', true);
     case 'LOGIN_FAILURE':
-      return state.set('error', action.payload.error);
+      return state.set('errors', action.payload.response.data.errors);
+    case 'LOGOUT_SUCCESS':
+      return state.set('loggedIn', false);
     default:
       return state;
   }

@@ -16,6 +16,10 @@ class SignIn extends React.Component {
     }
   }
 
+  isEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+  };
+
   onChangeEmail = (e) => {
     this.setState({
       email: e.target.value
@@ -35,6 +39,8 @@ class SignIn extends React.Component {
   }
 
   render() {
+    const { errors } = this.props;
+    const checkErrors = this.isEmpty(this.props.errors);
     return (
       <div className="auth-page">
         <div className="container page">
@@ -47,6 +53,16 @@ class SignIn extends React.Component {
                 </NavLink>
               </p>
 
+              <ul className="error-messages">
+                {
+                  !checkErrors && Object.keys(errors).map((item) => {
+                    return (
+                      <li>{item} {errors[item]}</li>
+                    )
+                  })
+                }
+              </ul>
+
               <form onSubmit={(e) => this.onSubmitLogin(e)}>
                 <fieldset>
                   <fieldset className="form-group">
@@ -54,7 +70,6 @@ class SignIn extends React.Component {
                       className="form-control form-control-lg"
                       type="email"
                       placeholder="Email"
-                      value={this.state.email}
                       onChange={(e) => this.onChangeEmail(e)}
                     />
                   </fieldset>
@@ -64,7 +79,6 @@ class SignIn extends React.Component {
                       className="form-control form-control-lg"
                       type="password"
                       placeholder="Password"
-                      value={this.state.password}
                       onChange={(e) => this.onChangePassword(e)}
                     />
                   </fieldset>

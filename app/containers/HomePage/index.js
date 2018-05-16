@@ -18,14 +18,17 @@ import LoginContainer from '../../containers/LoginContainer';
 import SignUp from '../../components/SignUp';
 import MainHomepage from '../../components/MainHomepage';
 import ArticleDetailContainer from '../ArticleDetailContainer';
+import HeaderContainer from '../HeaderContainer';
+import SettingsContainer from '../SettingsContainer';
 
 const HomePage = () => (
   <div>
-    <Header />
+    <HeaderContainer />
     <Switch>
       <Route exact path="/" component={MainHomepage} />
       <Route path="/signin" component={LoginContainer} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/settings" component={SettingsContainer} />
       <Route path="/article/:slug" component={ArticleDetailContainer} />
     </Switch>
     <Footer />

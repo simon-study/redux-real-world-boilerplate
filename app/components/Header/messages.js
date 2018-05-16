@@ -22,4 +22,12 @@ export default defineMessages({
     id: 'app.components.Header.signup',
     defaultMessage: 'Sign up',
   },
+  newpost: {
+    id: 'app.components.Header.newpost',
+    defaultMessage: 'New Post',
+  },
+  settings: {
+    id: 'app.components.Header.settings',
+    defaultMessage: 'Settings',
+  },
 });

@@ -14,7 +14,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectLoginContainer, { selectLoggedIn } from './selectors';
+import makeSelectLoginContainer, { selectLoggedIn, selectErrors } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -33,8 +33,12 @@ export class LoginContainer extends React.Component {
     if (this.props.loggedIn) {
       return <Redirect to={from} />;
     }
+    
     return (
-      <SignIn handleLogin={(email, password) => this.props.handleLogin(email, password)}/>
+      <SignIn 
+        handleLogin={(email, password) => this.props.handleLogin(email, password)}
+        errors={this.props.logincontainer.errors}
+      />
     );
   }
 }
@@ -46,6 +50,7 @@ LoginContainer.propTypes = {
 const mapStateToProps = createStructuredSelector({
   logincontainer: makeSelectLoginContainer(),
   loggedIn: selectLoggedIn(),
+  errors: selectErrors(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -61,7 +66,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(mapStateToProps, mapDispatchToProps, null, {pure: false});
 const withReducer = injectReducer({ key: 'loginContainer', reducer });
 const withSaga = injectSaga({ key: 'loginContainer', saga });
 
