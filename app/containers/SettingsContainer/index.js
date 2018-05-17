@@ -20,6 +20,7 @@ import Settings from '../../components/Settings';
 
 export class SettingsContainer extends React.Component {
   render() {
+    console.log(this.props.loggedIn.loggedIn);
     if (!this.props.loggedIn.loggedIn) {
       return <Redirect to={'/'} />;
     }

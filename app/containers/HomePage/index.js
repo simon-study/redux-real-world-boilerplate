@@ -18,6 +18,7 @@ import MainHomepage from '../../components/MainHomepage';
 import ArticleDetailContainer from '../ArticleDetailContainer';
 import HeaderContainer from '../HeaderContainer';
 import SettingsContainer from '../SettingsContainer';
+import NewArticle from '../../components/NewArticle';
 
 const HomePage = () => (
   <div>
@@ -27,6 +28,7 @@ const HomePage = () => (
       <Route path="/signin" component={LoginContainer} />
       <Route path="/signup" component={SignUp} />
       <Route path="/settings" component={SettingsContainer} />
+      <Route path="/editor" component={NewArticle} />
       <Route path="/article/:slug" component={ArticleDetailContainer} />
     </Switch>
     <Footer />

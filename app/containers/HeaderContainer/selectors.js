@@ -16,8 +16,25 @@ const makeSelectAuth = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const makeSelectCurrentUser = () => createSelector(
+  makeSelectAuth(),
+  (substate) => substate.currentUser
+);
+
+const makeSelectLoggedIn = () => createSelector(
+  makeSelectAuth(),
+  (substate) => substate.loggedIn
+);
+
+// const makeSelectCurrentUser = () => createSelector(
+//   makeSelectHeaderContainer(),
+//   (substate) => substate.currentUser
+// );
+
 export default makeSelectHeaderContainer;
 export {
   selectHeaderContainerDomain,
   makeSelectAuth,
+  makeSelectCurrentUser,
+  makeSelectLoggedIn
 };

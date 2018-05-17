@@ -7,5 +7,7 @@ export default function* defaultSaga() {
 
 function* logoutRequest() {
   window.localStorage.removeItem('token');
+  // debugger
   yield put({ type: 'LOGOUT_SUCCESS' });
+  // debugger
 }

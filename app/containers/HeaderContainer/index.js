@@ -12,30 +12,38 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectHeaderContainer, { makeSelectAuth } from './selectors';
+import makeSelectHeaderContainer, { makeSelectLoggedIn, makeSelectCurrentUser } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import Header from '../../components/Header';
 
 export class HeaderContainer extends React.Component {
+  componentWillMount() {
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      this.props.getCurrentUser(token);
+    }
+  }
+
   render() {
     return (
-      <Header loggedIn={this.props.auth.loggedIn} />
+      <Header loggedIn={this.props.loggedIn} currentUser={this.props.currentUser}/>
     );
   }
 }
 
 HeaderContainer.propTypes = {
-  
 };
 
 const mapStateToProps = createStructuredSelector({
   headercontainer: makeSelectHeaderContainer(),
-  auth: makeSelectAuth(),
+  loggedIn: makeSelectLoggedIn(),
+  currentUser: makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    getCurrentUser: (token) => dispatch({ type: 'GET_CURRENT_USER', token }),
     dispatch,
   };
 }

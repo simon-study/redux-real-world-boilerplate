@@ -20,11 +20,10 @@ import SignIn from '../../components/SignIn';
 
 export class LoginContainer extends React.Component {
   render() {
-    if (this.props.loggedIn) {
-      return <Redirect to={'/'} />;
-    }
-
     return (
+      this.props.loggedIn ?
+        <Redirect to={'/'} />
+        :
       <SignIn
         handleLogin={(email, password) => this.props.handleLogin(email, password)}
         errors={this.props.logincontainer.errors}
@@ -36,7 +35,6 @@ export class LoginContainer extends React.Component {
 LoginContainer.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   handleLogin: PropTypes.func.isRequired,
-
 };
 
 const mapStateToProps = createStructuredSelector({
