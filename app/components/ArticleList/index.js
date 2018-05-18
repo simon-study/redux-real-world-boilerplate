@@ -27,11 +27,11 @@ class ArticleList extends React.Component {
             return (
               <div key={article.slug} className="article-preview">
                 <div className="article-meta">
-                  <NavLink to="/profile">
+                  <NavLink to={`/profile/@${article.author.username}`}>
                     <img alt={article.author.username} src={article.author.image} />
                   </NavLink>
                   <div className="info">
-                    <NavLink to="/profile" className="author">{article.author.username}</NavLink>
+                    <NavLink to={`/profile/@${article.author.username}`} className="author">{article.author.username}</NavLink>
                     <span className="date">{new Date(article.createdAt).toDateString()}</span>
                   </div>
                   <button className="btn btn-outline-primary btn-sm pull-xs-right" onClick={this.onToggleFavorite}>

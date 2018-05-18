@@ -28,3 +28,13 @@ export function getArticlesWithTag(tag) {
 export function getArticlesWithOffset(page) {
   return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}&offset=${DEFAULT_LIMIT * page}`);
 }
+
+export function getProfile(username, token) {
+  return axios.get(`${API_ROOT}/profiles/${username}`, {
+    headers: {'authorization': `Token ${token}` }
+  });
+}
+
+export function getArticlesByAuthor(username) {
+  return axios.get(`${API_ROOT}/articles/?author=${username}&limit=5`)
+}

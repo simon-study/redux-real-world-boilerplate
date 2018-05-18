@@ -19,6 +19,7 @@ import ArticleDetailContainer from '../ArticleDetailContainer';
 import HeaderContainer from '../HeaderContainer';
 import SettingsContainer from '../SettingsContainer';
 import NewArticle from '../../components/NewArticle';
+import ProfileContainer from '../ProfileContainer';
 
 const HomePage = () => (
   <div>
@@ -29,6 +30,7 @@ const HomePage = () => (
       <Route path="/signup" component={SignUpContainer} />
       <Route path="/settings" component={SettingsContainer} />
       <Route path="/editor" component={NewArticle} />
+      <Route path="/profile/@:username" component={ProfileContainer} />
       <Route path="/article/:slug" component={ArticleDetailContainer} />
     </Switch>
     <Footer />

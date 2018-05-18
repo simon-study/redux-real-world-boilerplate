@@ -36,7 +36,7 @@ class LogoutHeader extends React.Component {
             </li>
             <li className="nav-item">
               <NavLink
-                to={`/@${currentUser.username}`}
+                to={`/profile/@${currentUser.username}`}
                 className="nav-link">
                 {currentUser.username}
               </NavLink>
