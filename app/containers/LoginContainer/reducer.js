@@ -5,10 +5,11 @@
  */
 
 import { fromJS } from 'immutable';
-// import { Redirect } from 'react-router';
-// import {
-//   DEFAULT_ACTION,
-// } from './constants';
+import {
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+  LOGOUT_SUCCESS,
+} from './constants';
 
 const initialState = fromJS({
   errors: {},
@@ -18,12 +19,12 @@ const initialState = fromJS({
 
 function loginContainerReducer(state = initialState, action) {
   switch (action.type) {
-    case 'LOGIN_SUCCESS':
+    case LOGIN_SUCCESS:
       return state.set('currentUser', action.payload.user)
                   .set('loggedIn', true);
-    case 'LOGIN_FAILURE':
+    case LOGIN_FAILURE:
       return state.set('errors', action.payload.response.data.errors);
-    case 'LOGOUT_SUCCESS':
+    case LOGOUT_SUCCESS:
       return state.set('loggedIn', false)
                   .set('currentUser', {});
     default:
