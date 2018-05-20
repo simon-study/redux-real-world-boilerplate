@@ -26,15 +26,10 @@ const makeSelectLoggedIn = () => createSelector(
   (substate) => substate.loggedIn
 );
 
-// const makeSelectCurrentUser = () => createSelector(
-//   makeSelectHeaderContainer(),
-//   (substate) => substate.currentUser
-// );
-
 export default makeSelectHeaderContainer;
 export {
   selectHeaderContainerDomain,
   makeSelectAuth,
   makeSelectCurrentUser,
-  makeSelectLoggedIn
+  makeSelectLoggedIn,
 };

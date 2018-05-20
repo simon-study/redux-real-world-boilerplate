@@ -5,9 +5,9 @@
 */
 
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { NavLink } from 'react-router-dom';
 
 class LoginHeader extends React.Component {
   render() {

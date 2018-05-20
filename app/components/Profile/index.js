@@ -5,8 +5,8 @@
 */
 
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 import ArticleList from '../ArticleList';
 
 class Profile extends React.Component {
@@ -45,7 +45,7 @@ class Profile extends React.Component {
                     <a className="nav-link active" href="">My Articles</a>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="">Favorited Articles</a>
+                    <NavLink to={`${this.props.profile.username}/favorites`} className="nav-link" href="">Favorited Articles</NavLink>
                   </li>
                 </ul>
               </div>
@@ -62,7 +62,8 @@ class Profile extends React.Component {
 }
 
 Profile.propTypes = {
-
+  profile: PropTypes.object.isRequired,
+  articlesByAuthor: PropTypes.array.isRequired,
 };
 
 export default Profile;

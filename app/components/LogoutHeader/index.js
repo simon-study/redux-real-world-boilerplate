@@ -5,9 +5,9 @@
 */
 
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { NavLink } from 'react-router-dom';
 
 class LogoutHeader extends React.Component {
   render() {
@@ -37,12 +37,13 @@ class LogoutHeader extends React.Component {
             <li className="nav-item">
               <NavLink
                 to={`/profile/@${currentUser.username}`}
-                className="nav-link">
+                className="nav-link"
+              >
                 {currentUser.username}
               </NavLink>
             </li>
           </ul>
-        </div>  
+        </div>
       </nav>
     );
   }

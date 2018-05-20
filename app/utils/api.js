@@ -29,12 +29,29 @@ export function getArticlesWithOffset(page) {
   return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}&offset=${DEFAULT_LIMIT * page}`);
 }
 
-export function getProfile(username, token) {
-  return axios.get(`${API_ROOT}/profiles/${username}`, {
-    headers: {'authorization': `Token ${token}` }
-  });
+export function getProfile(username) {
+  return axios.get(`${API_ROOT}/profiles/${username}`);
 }
 
 export function getArticlesByAuthor(username) {
-  return axios.get(`${API_ROOT}/articles/?author=${username}&limit=5`)
+  return axios.get(`${API_ROOT}/articles/?author=${username}&limit=5`);
+}
+
+export function register(username, email, password) {
+  return axios.post(`${API_ROOT}/users/`, {
+    user: {
+      username,
+      email,
+      password,
+    },
+  })
+}
+
+export function login(email, password) {
+  return axios.post(`${API_ROOT}/users/login`, {
+    user: {
+      email,
+      password,
+    },
+  });
 }

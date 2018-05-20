@@ -16,7 +16,6 @@ export default function* defaultSaga() {
 function* workerGetProfile(action) {
   try {
     const response = yield call(getProfile, action.username, action.token);
-    console.log(response.data);
     yield put(getProfileSuccess(response.data));
   } catch (error) {
     if (error.response) {

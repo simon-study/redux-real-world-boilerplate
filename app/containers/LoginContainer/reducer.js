@@ -21,9 +21,10 @@ function loginContainerReducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
       return state.set('currentUser', action.payload.user)
-                  .set('loggedIn', true);
+                  .set('loggedIn', true)
+                  .set('errors', {});
     case LOGIN_FAILURE:
-      return state.set('errors', action.payload.response.data.errors);
+      return state.set('errors', action.payload.errors);
     case LOGOUT_SUCCESS:
       return state.set('loggedIn', false)
                   .set('currentUser', {});

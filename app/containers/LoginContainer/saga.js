@@ -1,5 +1,6 @@
-import axios from 'axios';
-import { takeEvery, put } from 'redux-saga/effects';
+import { takeEvery, call, put } from 'redux-saga/effects';
+import { login } from '../../utils/api';
+import { loginSuccess, loginFailure } from './actions';
 
 // Individual exports for testing
 export default function* defaultSaga() {
@@ -7,21 +8,15 @@ export default function* defaultSaga() {
 }
 
 function* workerSubmitLoginForm(action) {
-  console.log(action)
   try {
-    const response = yield axios({
-      method: 'POST',
-      url: 'https://conduit.productionready.io/api/users/login',
-      data: {
-        user: {
-          email: action.users.email,
-          password: action.users.password,
-        },
-      },
-    });
+    const { email, password } = action.users;
+    const response = yield call(login, email, password);
+
     window.localStorage.setItem('token', response.data.user.token);
-    yield put({ type: 'LOGIN_SUCCESS', payload: response.data });
+    yield put(loginSuccess(response.data));
   } catch (error) {
-    yield put({ type: 'LOGIN_FAILURE', payload: error });
+    if (error.response) {
+      yield put(loginFailure(error.response.data));
+    }
   }
 }

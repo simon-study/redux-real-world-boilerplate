@@ -7,17 +7,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectSignUpContainer, { makeSelectLoggedIn } from './selectors';
+import makeSelectSignUpContainer, { makeSelectLoggedIn, makeSelectError } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 import SignUp from '../../components/SignUp';
 import { Redirect } from 'react-router-dom';
 
@@ -25,18 +22,20 @@ export class SignUpContainer extends React.Component {
   render() {
     return (
       this.props.loggedIn ? <Redirect to="/" /> :
-      <SignUp submitRegister={(name, email, password) => this.props.submitRegister(name, email, password)} />
+      <SignUp errors={this.props.errors}
+        submitRegister={(name, email, password) => this.props.submitRegister(name, email, password)}
+      />
     );
   }
 }
 
 SignUpContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   signupcontainer: makeSelectSignUpContainer(),
   loggedIn: makeSelectLoggedIn(),
+  errors: makeSelectError(),
 });
 
 function mapDispatchToProps(dispatch) {

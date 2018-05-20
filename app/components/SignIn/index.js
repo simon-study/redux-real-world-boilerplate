@@ -5,7 +5,9 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import ListErrors from '../ListErrors';
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -16,18 +18,16 @@ class SignIn extends React.Component {
     };
   }
 
-  isEmpty = (obj) => Object.keys(obj).length === 0;
-
   onChangeEmail = (e) => {
     this.setState({
-      email: e.target.value
-    })
+      email: e.target.value,
+    });
   }
-  
+
   onChangePassword = (e) => {
     this.setState({
-      password: e.target.value
-    })    
+      password: e.target.value,
+    });
   }
 
   onSubmitLogin = (e) => {
@@ -37,8 +37,6 @@ class SignIn extends React.Component {
   }
 
   render() {
-    const { errors } = this.props;
-    const checkErrors = this.isEmpty(this.props.errors);
     return (
       <div className="auth-page">
         <div className="container page">
@@ -51,15 +49,7 @@ class SignIn extends React.Component {
                 </NavLink>
               </p>
 
-              <ul className="error-messages">
-                {
-                  !checkErrors && Object.keys(errors).map((item) => {
-                    return (
-                      <li>{item} {errors[item]}</li>
-                    )
-                  })
-                }
-              </ul>
+              <ListErrors errors={this.props.errors} />
 
               <form onSubmit={(e) => this.onSubmitLogin(e)}>
                 <fieldset>
@@ -83,7 +73,7 @@ class SignIn extends React.Component {
 
                   <button
                     className="btn btn-lg btn-primary pull-xs-right"
-                    type="submit"                    
+                    type="submit"
                   >
                     Sign in
                   </button>
@@ -98,7 +88,8 @@ class SignIn extends React.Component {
 }
 
 SignIn.propTypes = {
-
+  handleLogin: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 export default SignIn;

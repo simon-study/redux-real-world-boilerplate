@@ -22,8 +22,7 @@ export class LoginContainer extends React.Component {
   render() {
     return (
       this.props.loggedIn ?
-        <Redirect to={'/'} />
-        :
+      <Redirect to={'/'} /> :
       <SignIn
         handleLogin={(email, password) => this.props.handleLogin(email, password)}
         errors={this.props.logincontainer.errors}

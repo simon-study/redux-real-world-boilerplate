@@ -27,12 +27,15 @@ export class HeaderContainer extends React.Component {
 
   render() {
     return (
-      <Header loggedIn={this.props.loggedIn} currentUser={this.props.currentUser}/>
+      <Header loggedIn={this.props.loggedIn} currentUser={this.props.currentUser} />
     );
   }
 }
 
 HeaderContainer.propTypes = {
+  getCurrentUser: PropTypes.func.isRequired,
+  loggedIn: PropTypes.any.isRequired,
+  currentUser: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -47,7 +47,7 @@
   "lint-staged": {
     "*.js": "lint:eslint"
   },
-  "pre-commit": "lint:staged",
+  //"pre-commit": "lint:staged",
   "babel": {
     "plugins": [
       "styled-components"
@@ -229,6 +229,7 @@
     "lodash": "4.17.4",
     "marked": "^0.3.19",
     "minimist": "1.2.0",
+    "npm": "^6.0.1",
     "prop-types": "15.5.10",
     "react": "15.6.1",
     "react-cookie": "^2.1.4",

@@ -5,9 +5,11 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { NavLink } from 'react-router-dom';
+import ListErrors from '../ListErrors';
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -16,21 +18,21 @@ class SignUp extends React.Component {
       name: '',
       email: '',
       password: '',
-    }
+    };
   }
+
+  isEmpty = (obj) => Object.keys(obj).length === 0;
 
   handleChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    console.log(this.state);
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     const { name, email, password } = this.state;
     this.props.submitRegister(name, email, password);
-    console.log(this.state);
   }
 
   render() {
@@ -45,11 +47,9 @@ class SignUp extends React.Component {
                 <NavLink to="/signin"><FormattedMessage {...messages.haveaccount} /></NavLink>
               </p>
 
-              {/* <ul className="error-messages">
-                <li>That email is already taken</li>
-              </ul> */}
+              <ListErrors errors={this.props.errors} />
 
-              <form onSubmit={this.handleSubmit}>
+              <form onSubmit={(e, name, email, password) => this.handleSubmit(e, name, email, password)}>
                 <fieldset className="form-group">
                   <input
                     className="form-control form-control-lg"
@@ -91,7 +91,8 @@ class SignUp extends React.Component {
 }
 
 SignUp.propTypes = {
-
+  submitRegister: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 export default SignUp;

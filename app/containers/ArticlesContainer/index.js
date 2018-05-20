@@ -42,8 +42,6 @@ export class ArticlesContainer extends React.Component {
   }
 
   render() {
-    // console.log(this.props)
-    // console.log(this.props);
     return (
       <div className="row">
         <div className="col-md-9">
@@ -97,8 +95,7 @@ const mapStateToProps = createStructuredSelector({
   currentPage: selectCurrentPage(),
   tags: selectTags(),
   tagName: selectTagName(),
-  auth: makeAuth()
-  // loggedIn: selectLoggedIn(),
+  auth: makeAuth(),
 });
 
 function mapDispatchToProps(dispatch) {

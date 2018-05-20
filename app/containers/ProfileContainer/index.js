@@ -7,8 +7,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -22,31 +20,24 @@ import makeSelectProfileContainer, {
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 import Profile from '../../components/Profile';
 import NotFound from '../NotFoundPage';
 
 export class ProfileContainer extends React.Component {
   componentDidMount() {
-    const token = window.localStorage.getItem('token');
     const username = this.props.match.params.username;
-    this.props.getUserProfile(username, token);
+    this.props.getUserProfile(username);
     this.props.getArticlesByAuthor(username);
   }
 
-  // componentWillUpdate(nextProps) {
-  //   // debugger
-  //   const token = window.localStorage.getItem('token');
-  //   const username = nextProps.match.params.username;
-  //   this.props.getUserProfile(username, token);
-  //   this.props.getArticlesByAuthor(username);
-  // }
-
   componentWillReceiveProps(nextProps) {
-    // const token = window.localStorage.getItem('token');
-    // const username = nextProps.match.params.username;
-    // this.props.getUserProfile(username, token);
-    // this.props.getArticlesByAuthor(username);
+    const currentName = this.props.match.params.username;
+    const nextName = nextProps.match.params.username;
+
+    if (nextName !== currentName) {
+      this.props.getUserProfile(nextName);
+      this.props.getArticlesByAuthor(nextName);
+    }
   }
 
   componentWillUnmount() {
@@ -79,7 +70,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUserProfile: (username, token) => dispatch({ type: 'GET_PROFILE_BY_AUTHOR', username, token }),
+    getUserProfile: (username) => dispatch({ type: 'GET_PROFILE_BY_AUTHOR', username }),
     getArticlesByAuthor: (username) => dispatch({ type: 'GET_ARTICLES_BY_AUTHOR', username }),
     resetProfileByAuthor: () => dispatch({ type: 'RESET_PROFILE_BY_AUTHOR' }),
     resetArticlesByAuthor: () => dispatch({ type: 'RESET_ARTICLES_BY_AUTHOR' }),

@@ -21,9 +21,15 @@ const makeSelectLoggedIn = () => createSelector(
   (substate) => substate.get('loggedIn')
 );
 
+const makeSelectError = () => createSelector(
+  makeSelectSignUpContainer(),
+  (substate) => substate.errors
+);
+
 export default makeSelectSignUpContainer;
 export {
   selectSignUpContainerDomain,
   makeSelectAuth,
   makeSelectLoggedIn,
+  makeSelectError,
 };
