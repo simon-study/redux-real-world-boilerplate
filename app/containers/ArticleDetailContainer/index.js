@@ -6,13 +6,19 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectArticleDetailContainer, { selectArticleDetails, selectComments } from './selectors';
+import makeSelectArticleDetailContainer, {
+  selectArticleDetails,
+  selectComments,
+  selectCurrentUser,
+  selectRedirect,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import ArticleDetail from '../../components/ArticleDetail';
@@ -21,6 +27,7 @@ import {
   fetchArticleDetail,
   fetchComments,
   resetComments,
+  deleteArticle
 } from './actions';
 
 export class ArticleDetailContainer extends React.Component {
@@ -35,8 +42,18 @@ export class ArticleDetailContainer extends React.Component {
   }
 
   render() {
+    // if (this.props.redirectTo && this.props.redirectTo.length) {
+    //   <Redirect to="/" />
+    // }
+    const { article, comments, currentUser } = this.props;
     return (
-      <ArticleDetail article={this.props.article} comments={this.props.comments} />
+      this.props.redirectTo.length ?  <Redirect to="/" /> :
+      <ArticleDetail
+        article={article}
+        comments={comments}
+        currentUser={currentUser}
+        deleteArticle={this.props.deleteArticle}
+      />
     );
   }
 }
@@ -54,6 +71,8 @@ const mapStateToProps = createStructuredSelector({
   articleDetailContainer: makeSelectArticleDetailContainer(),
   article: selectArticleDetails(),
   comments: selectComments(),
+  currentUser: selectCurrentUser(),
+  redirectTo: selectRedirect(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -62,6 +81,7 @@ function mapDispatchToProps(dispatch) {
     resetArticle: () => dispatch(resetArticle()),
     fetchComments: (slug) => dispatch(fetchComments(slug)),
     resetComments: () => dispatch(resetComments()),
+    deleteArticle: (slug) => dispatch(deleteArticle(slug)),
     dispatch,
   };
 }

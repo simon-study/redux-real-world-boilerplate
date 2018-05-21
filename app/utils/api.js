@@ -5,8 +5,10 @@ import {
   DEFAULT_OFFSET,
 } from './constants';
 
+
+
 export function getArticles() {
-  return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}`);
+  return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}`, );
 }
 
 export function getArticle(slug) {
@@ -55,3 +57,9 @@ export function login(email, password) {
     },
   });
 }
+
+// export function deleteArticle(slug, token) {
+//   return axios.delete(`${ROOT_API}/articles/${slug}`,{
+//     headers: { Authorization: "Token " + token }
+//   });
+// }

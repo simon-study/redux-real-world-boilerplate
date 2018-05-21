@@ -26,6 +26,9 @@ import saga from './saga';
 import NewArticle from '../../components/NewArticle';
 
 export class EditorContainer extends React.Component {
+  componentWillUnmount() {
+    console.log('reset');
+  }
   render() {
     return (
       <NewArticle
@@ -54,7 +57,6 @@ EditorContainer.propTypes = {
   description: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
   tag: PropTypes.string.isRequired,
-  tagList: PropTypes.array.isRequired,
   changeTitle: PropTypes.func.isRequired,
   changeDescription: PropTypes.func.isRequired,
   changeBody: PropTypes.func.isRequired,

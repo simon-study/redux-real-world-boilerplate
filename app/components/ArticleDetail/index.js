@@ -17,7 +17,7 @@ class ArticleDetail extends React.Component {
   };
 
   render() {
-    const { article, comments } = this.props;
+    const { article, comments, currentUser } = this.props;
     const checkArticleEmpty = this.isEmpty(article);
 
     return (
@@ -26,7 +26,11 @@ class ArticleDetail extends React.Component {
         <div className="banner">
           <div className="container">
             <h1>{article.title}</h1>
-            <ArticleMeta article={article} />
+            <ArticleMeta
+              article={article}
+              currentUser={currentUser}
+              deleteArticle={this.props.deleteArticle}
+            />
           </div>
         </div>
 

@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 class ArticleAction extends React.Component {
   onFollow = () => {
@@ -13,13 +13,17 @@ class ArticleAction extends React.Component {
   }
 
   render() {
-    const { article } = this.props;
+    const { article, currentUser } = this.props;
     return (
       <div className="article-actions">
         <div className="article-meta">
-          <Link to=""><img alt={article.author.username} src={article.author.image} /></Link>
+          <NavLink to={`/profile/@${article.author.username}`}>
+            <img alt={article.author.username} src={article.author.image} />
+          </NavLink>
           <div className="info">
-            <a href="" className="author">{article.author.username}</a>
+            <NavLink to={`/profile/@${article.author.username}`} className="author">
+              {article.author.username}
+            </NavLink>
             <span className="date">{new Date(article.createdAt).toDateString()}</span>
           </div>
 

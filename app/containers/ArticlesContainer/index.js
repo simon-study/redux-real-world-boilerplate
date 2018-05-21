@@ -18,26 +18,32 @@ import makeSelectArticlesContainer, {
 } from './selectors';
 import { selectLoggedIn } from '../LoginContainer/selectors';
 import {
-  fetchTags, fetchData,
-  setPage, fetchListArticlesTag, resetTagName,
+  fetchTags,
+  getAllArticles,
+  setPage,
+  fetchListArticlesTag,
+  resetTagName,
+  getFeedArticles,
 } from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import ArticleList from '../../components/ArticleList';
 import Pagination from '../../components/Pagination';
 import PopularTags from '../../components/PopularTags';
-
 import { makeAuth } from './selectors';
 
 export class ArticlesContainer extends React.Component {
   componentWillMount() {
-    this.props.fetchData();
+    const token = window.localStorage.getItem('token');
+    this.props.getAllArticles();
+    // token ? this.props.getFeedArticles() : this.props.getAllArticles();
     this.props.fetchTags();
   }
 
   onClickTab = (e) => {
     e.preventDefault();
-    this.props.fetchData();
+    // this.props.getFeedArticles();
+    this.props.getAllArticles();
     this.props.resetTagName();
   }
 
@@ -51,12 +57,14 @@ export class ArticlesContainer extends React.Component {
                 <a className={this.props.tagName ? 'nav-link' : 'nav-link active'} href="" onClick={(e) => this.onClickTab(e)}>Global Feed</a>
               </li>
               <li className="nav-item">
-                <a className={this.props.tagName ? 'nav-link active' : 'nav-link'} href="">{this.props.tagName && `#${this.props.tagName}`}</a>
+                <a className={this.props.tagName ? 'nav-link active' : 'nav-link'} href="">
+                  {this.props.tagName && `#${this.props.tagName}`}
+                </a>
               </li>
             </ul>
           </div>
 
-          <ArticleList articles={this.props.articles} />
+          <ArticleList articles={this.props.articles} favorite={(slug) => this.props.favorite(slug)} unFavorite={this.props.unFavorite}/>
           <Pagination
             articlesCount={this.props.articlesCount}
             currentPage={this.props.currentPage}
@@ -76,7 +84,8 @@ export class ArticlesContainer extends React.Component {
 }
 
 ArticlesContainer.propTypes = {
-  fetchData: PropTypes.func.isRequired,
+  getAllArticles: PropTypes.func.isRequired,
+  getFeedArticles: PropTypes.func.isRequired,
   setPage: PropTypes.func.isRequired,
   articles: PropTypes.any.isRequired,
   currentPage: PropTypes.number.isRequired,
@@ -101,10 +110,13 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     fetchTags: () => dispatch(fetchTags()),
-    fetchData: () => dispatch(fetchData()),
+    getAllArticles: () => dispatch(getAllArticles()),
+    // getFeedArticles: () => console.log('feed'),
+    getFeedArticles: () => dispatch({ type: 'GET_FEED_ARTICLES' }),
     setPage: (page) => dispatch(setPage(page)),
     fetchListArticlesTag: (tag) => dispatch(fetchListArticlesTag(tag)),
     resetTagName: () => dispatch(resetTagName()),
+    favorite: (slug) => dispatch({ type: 'FAVORITE_ARTICLE', slug }),
     dispatch,
   };
 }

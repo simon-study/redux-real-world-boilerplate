@@ -9,6 +9,7 @@ import {
   FETCH_ARTICLE_DETAIL,
   FETCH_COMMENTS,
   RESET_COMMENTS,
+  DELETE_ARTICLE,
 } from './constants';
 
 export function fetchArticleDetail(slug) {
@@ -34,5 +35,12 @@ export function fetchComments(slug) {
 export function resetComments() {
   return {
     type: RESET_COMMENTS,
+  };
+}
+
+export function deleteArticle(slug) {
+  return {
+    type: DELETE_ARTICLE,
+    slug
   };
 }

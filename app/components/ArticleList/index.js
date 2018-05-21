@@ -9,8 +9,12 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 class ArticleList extends React.Component {
-  onToggleFavorite = () => {
-
+  toggleFavorite = (slug, favorited) => {
+    if (favorited) {
+      this.props.unFavorite(slug)
+    } else {
+      this.props.favorite(slug)
+    } 
   }
 
   render() {
@@ -34,7 +38,10 @@ class ArticleList extends React.Component {
                     <NavLink to={`/profile/@${article.author.username}`} className="author">{article.author.username}</NavLink>
                     <span className="date">{new Date(article.createdAt).toDateString()}</span>
                   </div>
-                  <button className="btn btn-outline-primary btn-sm pull-xs-right" onClick={this.onToggleFavorite}>
+                  <button
+                    className="btn btn-outline-primary btn-sm pull-xs-right"
+                    onClick={(slug, favorited) => this.toggleFavorite(article.slug, article.favorited)}
+                  >
                     <i className="ion-heart"></i> {article.favoritesCount}
                   </button>
                 </div>

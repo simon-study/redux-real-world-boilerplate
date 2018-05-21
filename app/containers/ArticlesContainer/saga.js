@@ -1,4 +1,9 @@
+import axios from 'axios';
 import { takeEvery, put, call } from 'redux-saga/effects';
+import {
+  GET_FEED_ARTICLES_SUCCESS,
+  GET_FEED_ARTICLES_FAILURE,
+} from './constants';
 import { getArticles, getTags, getArticlesWithTag, getArticlesWithOffset } from '../../utils/api';
 
 export default function* watcherFetchArticles() {
@@ -7,18 +12,29 @@ export default function* watcherFetchArticles() {
     takeEvery('FETCH_TAGS', fetchTags),
     takeEvery('FETCH_ARTICLES_OFFSET', workerFetchArticlesWithOffset),
     takeEvery('FETCH_ARTICLES_TAGS', fetchArticlesTags),
+    takeEvery('FAVORITE_ARTICLE', favoriteArticle),
+    takeEvery('GET_FEED_ARTICLES', getFeedArticles),
   ];
 }
 
 function* fetchArticles() {
+  const token = window.localStorage.getItem('token');
   try {
-    const response = yield call(getArticles);
+    // const response = yield call(getArticles);
+    const response = yield axios({
+      method: 'GET',
+      url: 'https://conduit.productionready.io/api/articles/?limit=10',
+      headers: { Authorization: `Token ${token}` },
+    })
     yield put({
       type: 'FETCH_DATA_SUCCESS',
       payload: response.data,
     });
   } catch (error) {
-    yield put({ type: 'FETCH_DATA_FAILURE', payload: error });
+    yield put({
+      type: 'FETCH_DATA_FAILURE',
+      payload: error
+    });
   }
 }
 
@@ -58,5 +74,37 @@ function* fetchArticlesTags(action) {
     });
   } catch (error) {
     yield put({ type: 'FETCH_ARTICLES_TAG_FAILURE', payload: error });
+  }
+}
+
+function* favoriteArticle(action) {
+  console.log('run');
+  const token = window.localStorage.getItem('token');
+  try {
+    const response = yield axios({
+      method: 'POST',
+      url: `https://conduit.productionready.io/api/articles/${action.slug}/favorite`,
+      headers: { Authorization: `Token ${token}` },
+    });
+    yield put({ type: 'FAVORITE_SUCCESS', payload: response.data })
+  } catch (error) {
+    
+  }
+}
+
+function* getFeedArticles() {
+  const token = window.localStorage.getItem('token');
+  try {
+    const response = yield axios({
+      method: 'GET',
+      url: `https://conduit.productionready.io/api/articles/feed`,
+      headers: { Authorization: `Token ${token}` },
+    });
+    console.log(response)
+    yield put({ type: 'FETCH_DATA_SUCCESS', payload: response.data })
+  } catch (error) {
+    if (error.response) {
+      yield put({ type: 'FETCH_DATA_FAILURE', payload: error.response.data });
+    }
   }
 }

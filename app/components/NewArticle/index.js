@@ -106,7 +106,7 @@ class NewArticle extends React.Component {
                     />
                     <div className="tag-list">
                       {
-                        (this.props.tagList || []).map(tag => {
+                        this.props.tagList && this.props.tagList.length > 0 && this.props.tagList.map(tag => {
                           return (
                             <span className="tag-default tag-pill" key={tag}>
                               <i  className="ion-close-round">
