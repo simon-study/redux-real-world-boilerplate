@@ -41,57 +41,20 @@ function testReducer(state = initialState, action) {
     case FETCH_TAGS_FAILURE:
       return state.set('error', action.payload.error);
     case 'FAVORITE_SUCCESS':
-      const listArticles = state.get('articles');
-      return state.update(
-        listArticles.findIndex(function(item) {
-          return item.slug === action.payload.article.slug;
-        }), function(item) {
-          console.log(item)
+      const udpatedArticle = action.payload.article;
+      const newArticles = state.get('articles').map(article => {
+        if(article.slug === udpatedArticle.slug) {
+          return {
+            ...article,
+            favorited: udpatedArticle.favorited,
+            favoritesCount: udpatedArticle.favoritesCount
+          }
         }
-      )
-    // return state
 
-    // case TOGGLE_FAVORITE_SUCCESS:
-    //   const {
-    //     slug,
-    //     favorited,
-    //     favoritesCount
-    //   } = action.article
-    //   return state
-    //     .updateIn(
-    //       ['articleList'],
-    //       list => {
-    //         return list.map( item => {
-    //           if (item.get('slug') === slug) {
-    //             return item
-    //               .updateIn(
-    //                 ['favorited'],
-    //                 fav => favorited
-    //               )
-    //               .updateIn(
-    //                 ['favoritesCount'],
-    //                 favsCount => favoritesCount
-    //               )
-    //           }
-    //           return item
-    //         })
-    //       }
-    //     )
-    //   const udpatedArticle = action.article
-    //   const newArticles = state.get('articleList').map(article => {
-    //     if(article.slug === udpatedArticle.slug) {
-    //       return {
-    //         ...article,
-    //         favorited: udpatedArticle.favorited,
-    //         favoritesCount: udpatedArticle.favoritesCount
-    //       }
-    //     }
+        return article
+      })
 
-    //     return article
-    //   })
-
-    //   return state
-    //     .set('articleList', newArticles)
+      return state.set('articles', newArticles)
     case FETCH_ARTICLES_TAG_SUCCESS:
       return state.set('articles', action.payload.data.articles)
                   .set('articlesCount', action.payload.data.articlesCount)

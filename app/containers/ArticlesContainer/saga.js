@@ -4,7 +4,12 @@ import {
   GET_FEED_ARTICLES_SUCCESS,
   GET_FEED_ARTICLES_FAILURE,
 } from './constants';
-import { getArticles, getTags, getArticlesWithTag, getArticlesWithOffset } from '../../utils/api';
+import {
+  getArticles,
+  getTags,
+  getArticlesWithTag,
+  getArticlesWithOffset
+} from '../../utils/api';
 
 export default function* watcherFetchArticles() {
   yield [
@@ -20,7 +25,7 @@ export default function* watcherFetchArticles() {
 function* fetchArticles() {
   const token = window.localStorage.getItem('token');
   try {
-    // const response = yield call(getArticles);
+    // const response = yield call(getArticles);    
     const response = yield axios({
       method: 'GET',
       url: 'https://conduit.productionready.io/api/articles/?limit=10',
@@ -78,11 +83,11 @@ function* fetchArticlesTags(action) {
 }
 
 function* favoriteArticle(action) {
-  console.log('run');
+  const method = action.favorited ? 'DELETE' : 'POST';
   const token = window.localStorage.getItem('token');
   try {
     const response = yield axios({
-      method: 'POST',
+      method,
       url: `https://conduit.productionready.io/api/articles/${action.slug}/favorite`,
       headers: { Authorization: `Token ${token}` },
     });

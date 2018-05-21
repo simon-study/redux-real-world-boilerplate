@@ -57,9 +57,3 @@ export function login(email, password) {
     },
   });
 }
-
-// export function deleteArticle(slug, token) {
-//   return axios.delete(`${ROOT_API}/articles/${slug}`,{
-//     headers: { Authorization: "Token " + token }
-//   });
-// }

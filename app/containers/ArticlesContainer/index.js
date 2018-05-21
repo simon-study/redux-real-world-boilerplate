@@ -64,7 +64,7 @@ export class ArticlesContainer extends React.Component {
             </ul>
           </div>
 
-          <ArticleList articles={this.props.articles} favorite={(slug) => this.props.favorite(slug)} unFavorite={this.props.unFavorite}/>
+          <ArticleList articles={this.props.articles} toggleFavorite={(slug, favorited) => this.props.toggleFavorite(slug, favorited)}/>
           <Pagination
             articlesCount={this.props.articlesCount}
             currentPage={this.props.currentPage}
@@ -116,7 +116,7 @@ function mapDispatchToProps(dispatch) {
     setPage: (page) => dispatch(setPage(page)),
     fetchListArticlesTag: (tag) => dispatch(fetchListArticlesTag(tag)),
     resetTagName: () => dispatch(resetTagName()),
-    favorite: (slug) => dispatch({ type: 'FAVORITE_ARTICLE', slug }),
+    toggleFavorite: (slug, favorited) => dispatch({ type: 'FAVORITE_ARTICLE', slug, favorited }),
     dispatch,
   };
 }

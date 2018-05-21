@@ -9,12 +9,8 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 class ArticleList extends React.Component {
-  toggleFavorite = (slug, favorited) => {
-    if (favorited) {
-      this.props.unFavorite(slug)
-    } else {
-      this.props.favorite(slug)
-    } 
+  onToggleFavorite = (slug, favorited) => {
+    this.props.toggleFavorite(slug, favorited);
   }
 
   render() {
@@ -23,7 +19,7 @@ class ArticleList extends React.Component {
         <div className="article-preview">Loading articles...</div>
       );
     }
-
+    
     return (
       <div>
         {
@@ -39,8 +35,8 @@ class ArticleList extends React.Component {
                     <span className="date">{new Date(article.createdAt).toDateString()}</span>
                   </div>
                   <button
-                    className="btn btn-outline-primary btn-sm pull-xs-right"
-                    onClick={(slug, favorited) => this.toggleFavorite(article.slug, article.favorited)}
+                    className={!article.favorited ? 'btn btn-outline-primary btn-sm pull-xs-right' : 'btn btn-primary btn-sm pull-xs-right'}
+                    onClick={(slug, favorited) => this.onToggleFavorite(article.slug, article.favorited)}
                   >
                     <i className="ion-heart"></i> {article.favoritesCount}
                   </button>
