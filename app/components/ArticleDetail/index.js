@@ -16,6 +16,10 @@ class ArticleDetail extends React.Component {
     return Object.keys(obj).length === 0;
   };
 
+  // onToggleFavorite = (slug, favorited) => {
+  //   this.props.toggleFavorite(slug, favorited);
+  // }
+
   render() {
     const { article, comments, currentUser } = this.props;
     const checkArticleEmpty = this.isEmpty(article);
@@ -30,6 +34,7 @@ class ArticleDetail extends React.Component {
               article={article}
               currentUser={currentUser}
               deleteArticle={this.props.deleteArticle}
+              isModify={this.props.isModify}
             />
           </div>
         </div>
@@ -39,7 +44,11 @@ class ArticleDetail extends React.Component {
             <div className="col-md-12" dangerouslySetInnerHTML={{ __html: marked(article.body) }}></div>
           </div>
           <hr />
-          <ArticleAction article={article} />
+          <ArticleAction
+            article={article}
+            deleteArticle={this.props.deleteArticle}
+            isModify={this.props.isModify}
+          />
           <div className="row">
             <div className="col-xs-12 col-md-8 offset-md-2">
               <Comment comments={comments} />

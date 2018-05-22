@@ -5,10 +5,14 @@ import {
   DEFAULT_OFFSET,
 } from './constants';
 
-
-
 export function getArticles() {
-  return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}`, );
+  return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}`);
+}
+
+export function getArticlesWithAuth(token) {
+  return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}`, {
+    headers: { Authorization: `Token ${token}` },
+  });
 }
 
 export function getArticle(slug) {
@@ -46,7 +50,7 @@ export function register(username, email, password) {
       email,
       password,
     },
-  })
+  });
 }
 
 export function login(email, password) {
@@ -56,4 +60,11 @@ export function login(email, password) {
       password,
     },
   });
+}
+
+export function updateProfile(user, token) {
+  return axios.put(`${API_ROOT}/user`,
+    { user },
+    { headers: { Authorization: `Token ${token}` } }
+  );
 }

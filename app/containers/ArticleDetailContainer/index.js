@@ -27,7 +27,7 @@ import {
   fetchArticleDetail,
   fetchComments,
   resetComments,
-  deleteArticle
+  deleteArticle,
 } from './actions';
 
 export class ArticleDetailContainer extends React.Component {
@@ -41,18 +41,26 @@ export class ArticleDetailContainer extends React.Component {
     // this.props.resetComments();
   }
 
+  isEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+  };
+
   render() {
     // if (this.props.redirectTo && this.props.redirectTo.length) {
     //   <Redirect to="/" />
     // }
-    const { article, comments, currentUser } = this.props;
+    const { article, currentUser, comments } = this.props
+    const checkEmptyArticle = this.isEmpty(article);
+    const checkEmptyCurrentUser = this.isEmpty(currentUser);
+    const isModify = !checkEmptyArticle && !checkEmptyCurrentUser && currentUser.username === article.author.username;
     return (
-      this.props.redirectTo.length ?  <Redirect to="/" /> :
+      this.props.redirectTo.length ? <Redirect to="/" /> :
       <ArticleDetail
         article={article}
         comments={comments}
         currentUser={currentUser}
         deleteArticle={this.props.deleteArticle}
+        isModify={isModify}
       />
     );
   }
@@ -65,6 +73,9 @@ ArticleDetailContainer.propTypes = {
   resetArticle: PropTypes.func.isRequired,
   comments: PropTypes.array.isRequired,
   article: PropTypes.any.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  redirectTo: PropTypes.string.isRequired,
+  deleteArticle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

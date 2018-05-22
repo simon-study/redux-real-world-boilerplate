@@ -24,11 +24,16 @@ class Profile extends React.Component {
                 {
                   this.props.profile.bio && <p>{this.props.profile.bio}</p>
                 }
-                <button className="btn btn-sm btn-outline-secondary action-btn">
-                  <i className="ion-plus-round"></i>
-                  &nbsp;
-                  Follow {this.props.profile.username}
-                </button>
+                {
+                  this.props.currentUser.username === this.props.profile.username ?
+                  <NavLink to="/settings" className="btn btn-sm btn-outline-secondary action-btn">
+                    <i className="ion-gear-a"></i>&nbsp;Edit Profile Settings
+                  </NavLink>:
+                  <button className="btn btn-sm btn-outline-secondary action-btn">
+                    <i className="ion-plus-round"></i>
+                    &nbsp;Follow {this.props.profile.username}
+                  </button>
+                }
               </div>
 
             </div>
@@ -50,7 +55,7 @@ class Profile extends React.Component {
                 </ul>
               </div>
 
-              <ArticleList articles={this.props.articlesByAuthor} />
+              <ArticleList articles={this.props.articlesByAuthor} toggleFavorite={this.props.toggleFavorite} />
             </div>
 
           </div>

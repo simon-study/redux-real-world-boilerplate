@@ -21,13 +21,23 @@ import makeSelectEditorContainer, {
   makeSelectArticle,
   makeSelectErrors,
 } from './selectors';
+import {
+  changeTitle,
+  changeDescription,
+  changeBody,
+  changeTag,
+  addTag,
+  resetTag,
+  submitForm,
+  resetArticle,
+} from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import NewArticle from '../../components/NewArticle';
 
 export class EditorContainer extends React.Component {
   componentWillUnmount() {
-    console.log('reset');
+    // console.log('reset');
   }
   render() {
     return (
@@ -82,14 +92,14 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeTitle: (title) => dispatch({ type: 'CHANGE_TITLE', title }),
-    changeDescription: (description) => dispatch({ type: 'CHANGE_DESC', description }),
-    changeBody: (body) => dispatch({ type: 'CHANGE_BODY', body }),
-    changeTag: (tag) => dispatch({ type: 'CHANGE_TAG', tag }),
-    addTag: (tag) => dispatch({ type: 'ADD_TAG', tag }),
-    resetTag: () => dispatch({ type: 'RESET_TAG' }),
-    submitForm: (article) => dispatch({ type: 'NEW_ARTICLE', article}),
-    resetArticle: () => dispatch({ type: 'RESET_NEW_ARTICLE' }),
+    changeTitle: (title) => dispatch(changeTitle(title)),
+    changeDescription: (description) => dispatch(changeDescription(description)),
+    changeBody: (body) => dispatch(changeBody(body)),
+    changeTag: (tag) => dispatch(changeTag(tag)),
+    addTag: (tag) => dispatch(addTag(tag)),
+    resetTag: () => dispatch(resetTag()),
+    submitForm: (article) => dispatch(submitForm(article)),
+    resetArticle: () => dispatch(resetArticle()),
     dispatch,
   };
 }

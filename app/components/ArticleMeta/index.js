@@ -14,8 +14,7 @@ class ArticleMeta extends React.Component {
   }
 
   render() {
-    const { article, currentUser } = this.props;
-    const isModify = currentUser && currentUser.username === article.author.username;
+    const { article, currentUser, isModify } = this.props;
     return (
       <div className="article-meta">
         <NavLink to={`/profile/@${article.author.username}`}>

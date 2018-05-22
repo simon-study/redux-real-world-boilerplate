@@ -5,11 +5,26 @@
  */
 
 import {
-  DEFAULT_ACTION,
+  RESET,
+  LOGOUT_REQUEST,
+  UPDATE_PROFILE,
 } from './constants';
 
-export function defaultAction() {
+export function logout() {
   return {
-    type: DEFAULT_ACTION,
+    type: LOGOUT_REQUEST,
+  };
+}
+
+export function updateProfile(user) {
+  return {
+    type: UPDATE_PROFILE,
+    user,
+  };
+}
+
+export function resetSetting() {
+  return {
+    type: RESET,
   };
 }

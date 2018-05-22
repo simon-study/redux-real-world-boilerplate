@@ -41,20 +41,20 @@ function testReducer(state = initialState, action) {
     case FETCH_TAGS_FAILURE:
       return state.set('error', action.payload.error);
     case 'FAVORITE_SUCCESS':
-      const udpatedArticle = action.payload.article;
+      const responseArticle = action.payload.article;
       const newArticles = state.get('articles').map(article => {
-        if(article.slug === udpatedArticle.slug) {
+        if (article.slug === responseArticle.slug) {
           return {
             ...article,
-            favorited: udpatedArticle.favorited,
-            favoritesCount: udpatedArticle.favoritesCount
-          }
+            favorited: responseArticle.favorited,
+            favoritesCount: responseArticle.favoritesCount,
+          };
         }
 
-        return article
-      })
+        return article;
+      });
 
-      return state.set('articles', newArticles)
+      return state.set('articles', newArticles);
     case FETCH_ARTICLES_TAG_SUCCESS:
       return state.set('articles', action.payload.data.articles)
                   .set('articlesCount', action.payload.data.articlesCount)

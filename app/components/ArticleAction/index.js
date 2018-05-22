@@ -12,8 +12,12 @@ class ArticleAction extends React.Component {
 
   }
 
+  onDeleteArticle = () => {
+    this.props.deleteArticle(this.props.article.slug);
+  }
+
   render() {
-    const { article, currentUser } = this.props;
+    const { article, currentUser, isModify } = this.props;
     return (
       <div className="article-actions">
         <div className="article-meta">
@@ -27,17 +31,34 @@ class ArticleAction extends React.Component {
             <span className="date">{new Date(article.createdAt).toDateString()}</span>
           </div>
 
-          <button className="btn btn-sm btn-outline-secondary" onClick={this.onFollow}>
-            <i className="ion-plus-round"></i>
-            &nbsp;
-            Follow {article.author.username} <span className="counter">(10)</span>
-          </button>
-          &nbsp;
-          <button className="btn btn-sm btn-outline-primary">
-            <i className="ion-heart"></i>
-            &nbsp;
-            Favorite Post <span className="counter">({article.favoritesCount})</span>
-          </button>
+          {
+            isModify ?
+            <span>
+              <NavLink
+                to={`/editor/${article.slug}`}
+                className="btn btn-outline-secondary btn-sm">
+                <i className="ion-edit"></i> Edit Article
+              </NavLink>
+              &nbsp;&nbsp;
+              <button className="btn btn-outline-danger btn-sm" onClick={this.onDeleteArticle}>
+                <i className="ion-trash-a"></i> Delete Article
+              </button>
+            </span>
+            :
+            <span>
+              <button className="btn btn-sm btn-outline-secondary">
+                <i className="ion-plus-round"></i>
+                &nbsp;
+                Follow {article.author.username} <span className="counter">(10)</span>
+              </button>
+              &nbsp;&nbsp;
+              <button className="btn btn-sm btn-outline-primary">
+                <i className="ion-heart"></i>
+                &nbsp;
+                Favorite Post <span className="counter">({article.favoritesCount})</span>
+              </button>
+            </span>
+          }
         </div>
       </div>
     );

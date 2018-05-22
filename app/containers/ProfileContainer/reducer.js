@@ -36,6 +36,23 @@ function profileContainerReducer(state = initialState, action) {
       return state.set('profile', {});
     case RESET_ARTICLES_BY_AUTHOR:
       return state.set('articlesByAuthor', []);
+    case 'FAVORITE_IN_PROFILE_SUCCESS':
+      console.log('run');
+      console.log(action.payload.article)
+      const responseArticle = action.payload.article;
+      const newArticles = state.get('articlesByAuthor').map(article => {
+        if (article.slug === responseArticle.slug) {
+          return {
+            ...article,
+            favorited: responseArticle.favorited,
+            favoritesCount: responseArticle.favoritesCount,
+          };
+        }
+
+        return article;
+      });
+
+      return state.set('articlesByAuthor', newArticles);
     default:
       return state;
   }

@@ -3,7 +3,7 @@
 * NewArticle
 *
 */
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 // import { FormattedMessage } from 'react-intl';
@@ -136,7 +136,16 @@ class NewArticle extends React.Component {
 }
 
 NewArticle.propTypes = {
-
+  resetArticle: PropTypes.func.isRequired,
+  changeTitle: PropTypes.func.isRequired,
+  changeDescription: PropTypes.func.isRequired,
+  changeBody: PropTypes.func.isRequired,
+  changeTag: PropTypes.func.isRequired,
+  resetTag: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  tag: PropTypes.string.isRequired,
+  body: PropTypes.string.isRequired,
 };
 
 export default NewArticle;

@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
  * Direct selector to the profileContainer state domain
  */
 const selectProfileContainerDomain = (state) => state.get('profileContainer');
+const selectAuth = (state) => state.get('auth');
 
 const makeSelectProfileContainer = () => createSelector(
   selectProfileContainerDomain,
@@ -30,6 +31,16 @@ const makeSelectArticlesCountByAuthor = () => createSelector(
   (substate) => substate.get('articlesCountByAuthor')
 );
 
+const makeSelectAuth = () => createSelector(
+  selectAuth,
+  (substate) => substate.toJS()
+);
+
+const selectCurrentUser = () => createSelector(
+  makeSelectAuth(),
+  (substate) => substate.currentUser
+);
+
 export default makeSelectProfileContainer;
 export {
   selectProfileContainerDomain,
@@ -37,4 +48,6 @@ export {
   makeSelectError,
   makeSelectArticlesByAuthor,
   makeSelectArticlesCountByAuthor,
+  makeSelectAuth,
+  selectCurrentUser,
 };

@@ -17,17 +17,20 @@ import makeSelectProfileContainer, {
   makeSelectProfile,
   makeSelectArticlesByAuthor,
   makeSelectArticlesCountByAuthor,
+  selectCurrentUser,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import Profile from '../../components/Profile';
 import NotFound from '../NotFoundPage';
+import { resetSetting } from '../SettingsContainer/actions';
 
 export class ProfileContainer extends React.Component {
-  componentDidMount() {
+  componentWillMount() {
     const username = this.props.match.params.username;
     this.props.getUserProfile(username);
     this.props.getArticlesByAuthor(username);
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,11 +50,11 @@ export class ProfileContainer extends React.Component {
   }
 
   render() {
-    const { error, profile, articlesByAuthor } = this.props;
+    const { error, profile, articlesByAuthor, currentUser } = this.props;
     return (
       error
       ? <NotFound content={error} />
-      : <Profile profile={profile} articlesByAuthor={articlesByAuthor} />
+      : <Profile {...this.props}/>
     );
   }
 }
@@ -66,14 +69,16 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
   articlesByAuthor: makeSelectArticlesByAuthor(),
   articlesCountByAuthor: makeSelectArticlesCountByAuthor(),
+  currentUser: selectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUserProfile: (username) => dispatch({ type: 'GET_PROFILE_BY_AUTHOR', username }),
+    getUserProfile: (username) => { dispatch({ type: 'GET_PROFILE_BY_AUTHOR', username }); dispatch(resetSetting()) },
     getArticlesByAuthor: (username) => dispatch({ type: 'GET_ARTICLES_BY_AUTHOR', username }),
     resetProfileByAuthor: () => dispatch({ type: 'RESET_PROFILE_BY_AUTHOR' }),
     resetArticlesByAuthor: () => dispatch({ type: 'RESET_ARTICLES_BY_AUTHOR' }),
+    toggleFavorite: (slug, favorited) => dispatch({ type: 'FAVORITE_ARTICLE', slug, favorited }),
     dispatch,
   };
 }

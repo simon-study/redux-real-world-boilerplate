@@ -14,7 +14,7 @@ const initialState = fromJS({
 function signUpContainerReducer(state = initialState, action) {
   switch (action.type) {
     case REGISTER_FAILURE:
-      return state.set('errors', action.payload.errors)
+      return state.set('errors', action.payload.errors);
     default:
       return state;
   }

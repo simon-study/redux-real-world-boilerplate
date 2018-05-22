@@ -16,8 +16,20 @@ const makeSelectLoggedIn = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const selectCurrentUser = () => createSelector(
+  makeSelectLoggedIn(),
+  (substate) => substate.currentUser
+);
+
+const selectRedirect = () => createSelector(
+  selectSettingsContainerDomain,
+  (substate) => substate.get('redirect')
+);
+
 export default makeSelectSettingsContainer;
 export {
   selectSettingsContainerDomain,
   makeSelectLoggedIn,
+  selectCurrentUser,
+  selectRedirect,
 };
