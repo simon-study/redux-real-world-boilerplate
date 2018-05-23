@@ -19,12 +19,13 @@ const initialState = fromJS({
   error: '',
   articlesByAuthor: [],
   articlesCountByAuthor: 0,
+  redirectTo: '',
 });
 
 function profileContainerReducer(state = initialState, action) {
   switch (action.type) {
     case GET_PROFILE_SUCCESS:
-      return state.set('profile', action.payload.profile);
+      return state.set('profile', fromJS(action.payload.profile));
     case GET_PROFILE_FAILURE:
       return state.set('error', action.payload);
     case GET_ARTICLES_BY_AUTHOR_SUCCESS:
@@ -37,8 +38,6 @@ function profileContainerReducer(state = initialState, action) {
     case RESET_ARTICLES_BY_AUTHOR:
       return state.set('articlesByAuthor', []);
     case 'FAVORITE_IN_PROFILE_SUCCESS':
-      console.log('run');
-      console.log(action.payload.article)
       const responseArticle = action.payload.article;
       const newArticles = state.get('articlesByAuthor').map(article => {
         if (article.slug === responseArticle.slug) {
@@ -48,11 +47,13 @@ function profileContainerReducer(state = initialState, action) {
             favoritesCount: responseArticle.favoritesCount,
           };
         }
-
         return article;
       });
-
       return state.set('articlesByAuthor', newArticles);
+    case 'TOGGLE_FOLLOW_SUCCESS':
+      return state.setIn(['profile', 'following'], action.payload.profile.following);
+    case 'REDIRECT_PAGE':
+      return state.set('redirectTo', '/signup');
     default:
       return state;
   }

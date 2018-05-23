@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import messages from './messages';
+import ListErrors from '../ListErrors';
 
 class Settings extends React.Component {
   constructor(props) {
@@ -45,8 +46,20 @@ class Settings extends React.Component {
     this.props.updateProfile(user);
   }
 
+  isEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+  };
+
   render() {
-    const { image, username, bio, email, password } = this.state;
+    const {
+      image,
+      username,
+      bio,
+      email,
+      password,
+      errors
+    } = this.state;
+    const checkErrors = this.isEmpty(this.props.errors);
     return (
       <div className="settings-page">
         <div className="container page">
@@ -54,7 +67,7 @@ class Settings extends React.Component {
 
             <div className="col-md-6 offset-md-3 col-xs-12">
               <h1 className="text-xs-center">Your Settings</h1>
-
+              {!checkErrors && <ListErrors errors={errors} />}
               <form>
                 <fieldset>
                   <fieldset className="form-group">
@@ -105,6 +118,7 @@ class Settings extends React.Component {
                       placeholder="Password"
                       name="password"
                       value={password}
+                      onChange={this.handleChange}
                     />
                   </fieldset>
                   <button
@@ -134,7 +148,6 @@ class Settings extends React.Component {
 }
 
 Settings.propTypes = {
-  onClickLogout: PropTypes.func.isRequired,
   updateProfile: PropTypes.func.isRequired,
   currentUser: PropTypes.object.isRequired,
 };

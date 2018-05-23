@@ -26,10 +26,16 @@ const selectRedirect = () => createSelector(
   (substate) => substate.get('redirect')
 );
 
+const selectErrors = () => createSelector(
+  makeSelectSettingsContainer(),
+  (substate) => substate.errors
+);
+
 export default makeSelectSettingsContainer;
 export {
   selectSettingsContainerDomain,
   makeSelectLoggedIn,
   selectCurrentUser,
   selectRedirect,
+  selectErrors,
 };

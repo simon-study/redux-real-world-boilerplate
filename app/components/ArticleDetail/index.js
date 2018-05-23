@@ -16,10 +16,6 @@ class ArticleDetail extends React.Component {
     return Object.keys(obj).length === 0;
   };
 
-  // onToggleFavorite = (slug, favorited) => {
-  //   this.props.toggleFavorite(slug, favorited);
-  // }
-
   render() {
     const { article, comments, currentUser } = this.props;
     const checkArticleEmpty = this.isEmpty(article);
@@ -35,6 +31,8 @@ class ArticleDetail extends React.Component {
               currentUser={currentUser}
               deleteArticle={this.props.deleteArticle}
               isModify={this.props.isModify}
+              toggleFavorite={this.props.toggleFavorite}
+              toggleFollow={this.props.toggleFollow}
             />
           </div>
         </div>
@@ -48,6 +46,8 @@ class ArticleDetail extends React.Component {
             article={article}
             deleteArticle={this.props.deleteArticle}
             isModify={this.props.isModify}
+            toggleFavorite={this.props.toggleFavorite}
+            toggleFollow={this.props.toggleFollow}
           />
           <div className="row">
             <div className="col-xs-12 col-md-8 offset-md-2">

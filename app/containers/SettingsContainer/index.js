@@ -17,6 +17,7 @@ import makeSelectSettingsContainer, {
   makeSelectLoggedIn,
   selectCurrentUser,
   selectRedirect,
+  selectErrors,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -24,21 +25,25 @@ import Settings from '../../components/Settings';
 import { logout, updateProfile } from './actions';
 
 export class SettingsContainer extends React.Component {
+  componentWillUnmount() {
+    this.props.resetErrors();
+  }
+
   render() {
     if (!this.props.loggedIn.loggedIn) {
       return <Redirect to={'/'} />;
     }
     
     if (this.props.redirect.length) {
-      console.log(this.props.redirect);
       return <Redirect to={`${this.props.redirect}`} />
     }
     
     return (
       <Settings
+        errors={this.props.errors}
         onClickLogout={this.props.handleLogout}
-        currentUser={this.props.currentUser}
         updateProfile={this.props.updateProfile}
+        currentUser={this.props.currentUser}
       />
     );
   }
@@ -54,12 +59,15 @@ const mapStateToProps = createStructuredSelector({
   loggedIn: makeSelectLoggedIn(),
   currentUser: selectCurrentUser(),
   redirect: selectRedirect(),
+  errors: selectErrors(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     handleLogout: () => dispatch(logout()),
+    // handleLogout: () => console.log('logout'),
     updateProfile: (user) => dispatch(updateProfile(user)),
+    resetErrors: () => dispatch({ type: 'RESET_ERRORS' }),
     dispatch,
   };
 }

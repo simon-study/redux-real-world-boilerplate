@@ -12,6 +12,8 @@ export default function* defaultSaga() {
     takeEvery('FETCH_ARTICLE_DETAIL', fetchArticleDetail),
     takeEvery('FETCH_COMMENTS', fetchComments),
     takeEvery('DELETE_ARTICLE', deleteArticle),
+    takeEvery('TOGGLE_FAVORITE', toggleFavorite),
+    takeEvery('TOGGLE_FOLLOW', toggleFollow),
   ];
 }
 
@@ -59,6 +61,51 @@ function* deleteArticle(action) {
   } catch (error) {
     if (error.response) {
       yield put({ type: 'DELETE_ARTICLE_FAILURE', payload: error.response.data });
+    }
+  }
+}
+
+function* toggleFavorite(action) {
+  const token = window.localStorage.getItem('token');
+  const method = action.favorited ? 'DELETE' : 'POST';
+
+  try {
+    if (token) {
+      const response = yield axios({
+        method,
+        url: `https://conduit.productionready.io/api/articles/${action.slug}/favorite`,
+        headers: { Authorization: `Token ${token}` },
+      });
+
+      yield put({ type: 'FAVORITE_ON_ARTICLE_DETAIL_SUCCESS', payload: response.data });
+    } else {
+      yield put({ type: 'REDIRECT_PAGE' });
+    }
+  } catch (error) {
+    if (response.error) {
+      yield put({ type: 'FAVORITE_ERROR', payload: error.response.data })
+    }
+  }
+}
+
+function* toggleFollow(action) {
+  const token = window.localStorage.getItem('token');
+  const method = action.follow ? 'DELETE' : 'POST';
+
+  try {
+    if (token) {
+      const response = yield axios({
+        method: method,
+        url: `https://conduit.productionready.io/api/profiles/${action.username}/follow`,
+        headers: { Authorization: `Token ${token}` },
+      })
+      yield put({ type: 'TOGGLE_FOLLOW_SUCCESS', payload: response.data });
+    } else {
+      yield put({ type: 'REDIRECT_PAGE' });
+    }
+  } catch (error) {
+    if (error.response) {
+      yield put({ type: 'TOGGLE_FOLLOW_ERROR', payload: error.response.data });
     }
   }
 }

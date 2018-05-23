@@ -10,28 +10,39 @@ import { NavLink } from 'react-router-dom';
 import ArticleList from '../ArticleList';
 
 class Profile extends React.Component {
+  onToggleFollow = () => {
+    const {username, following} = this.props.profile;
+    this.props.handleToggleFollow(username, following)
+  }
+
   render() {
+    const { image, username, bio, following } = this.props.profile;
     return (
       <div className="profile-page">
-
         <div className="user-info">
           <div className="container">
             <div className="row">
-
               <div className="col-xs-12 col-md-10 offset-md-1">
-                <img src={this.props.profile.image} className="user-img" />
-                <h4>{this.props.profile.username}</h4>
+                <img src={image} className="user-img" />
+                <h4>{username}</h4>
                 {
-                  this.props.profile.bio && <p>{this.props.profile.bio}</p>
+                  bio && <p>{bio}</p>
                 }
                 {
                   this.props.currentUser.username === this.props.profile.username ?
                   <NavLink to="/settings" className="btn btn-sm btn-outline-secondary action-btn">
                     <i className="ion-gear-a"></i>&nbsp;Edit Profile Settings
-                  </NavLink>:
-                  <button className="btn btn-sm btn-outline-secondary action-btn">
+                  </NavLink>
+                  :
+                  <button 
+                    className="btn btn-sm btn-outline-secondary action-btn"
+                    onClick={this.onToggleFollow}
+                  >
                     <i className="ion-plus-round"></i>
-                    &nbsp;Follow {this.props.profile.username}
+                    &nbsp;
+                    { following ? 'Unfollow' : 'Follow' }
+                    &nbsp;
+                    { username }
                   </button>
                 }
               </div>
@@ -50,12 +61,19 @@ class Profile extends React.Component {
                     <a className="nav-link active" href="">My Articles</a>
                   </li>
                   <li className="nav-item">
-                    <NavLink to={`${this.props.profile.username}/favorites`} className="nav-link" href="">Favorited Articles</NavLink>
+                    <NavLink
+                      to={`${username}/favorites`}
+                      className="nav-link">
+                      Favorited Articles
+                    </NavLink>
                   </li>
                 </ul>
               </div>
 
-              <ArticleList articles={this.props.articlesByAuthor} toggleFavorite={this.props.toggleFavorite} />
+              <ArticleList
+                articles={this.props.articlesByAuthor}
+                toggleFavorite={this.props.toggleFavorite}
+              />
             </div>
 
           </div>

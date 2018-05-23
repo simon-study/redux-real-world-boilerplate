@@ -13,6 +13,8 @@ import {
   FETCH_COMMENTS_FAILURE,
   RESET_COMMENTS,
   DELETE_ARTICLE_SUCCESS,
+  REDIRECT_PAGE,
+  FAVORITE_ON_ARTICLE_DETAIL_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -25,13 +27,14 @@ const initialState = fromJS({
 function articleDetailContainerReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_ARTICLE_DETAIL_SUCCESS:
-      return state.set('article', action.payload.article);
+      return state.set('article', fromJS(action.payload.article));
     case FETCH_ARTICLE_DETAIL_FAILURE:
       return state.set('error', action.payload.error);
     case RESET_ARTICLE:
-      return state.set('article', {})
-                  .set('redirectTo', '')
-                  .set('error', {});
+      return state
+        .set('article', {})
+        .set('redirectTo', '')
+        .set('error', {});
     case FETCH_COMMENTS_SUCCESS:
       return state.set('comments', action.payload.comments);
     case FETCH_COMMENTS_FAILURE:
@@ -39,8 +42,19 @@ function articleDetailContainerReducer(state = initialState, action) {
     case RESET_COMMENTS:
       return state.set('comments', []);
     case DELETE_ARTICLE_SUCCESS:
-      return state.set('article', {})
-                  .set('redirectTo', '/');
+      return state
+        .set('article', {})
+        .set('redirectTo', '/');
+    case REDIRECT_PAGE:
+      return state.set('redirectTo', '/signup');
+    case 'FAVORITE_ON_ARTICLE_DETAIL_SUCCESS':
+      return state
+        .setIn(['article', 'favorited'], action.payload.article.favorited)
+        .setIn(['article', 'favoritesCount'], action.payload.article.favoritesCount);
+    case 'TOGGLE_FOLLOW_SUCCESS':
+      console.log(action.payload)
+      return state
+        .setIn(['article', 'author', 'following'], action.payload.profile.following);
     default:
       return state;
   }

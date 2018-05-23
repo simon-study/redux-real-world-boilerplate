@@ -7,9 +7,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import ItemError from '../ItemError';
 
-class ListErrors extends React.Component {
+class ListErrors extends React.Component {  
+
   render() {
     return (
       <ul className="error-messages">

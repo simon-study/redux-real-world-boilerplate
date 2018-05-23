@@ -9,11 +9,17 @@ import { NavLink } from 'react-router-dom';
 
 class ArticleAction extends React.Component {
   onFollow = () => {
-
+    const { username, following } = this.props.article.author;
+    this.props.toggleFollow(username, following);
   }
 
   onDeleteArticle = () => {
     this.props.deleteArticle(this.props.article.slug);
+  }
+
+  onToggleFavorite = () => {
+    const { slug, favorited } = this.props.article;
+    this.props.toggleFavorite(slug, favorited);
   }
 
   render() {
@@ -46,13 +52,19 @@ class ArticleAction extends React.Component {
             </span>
             :
             <span>
-              <button className="btn btn-sm btn-outline-secondary">
+              <button className="btn btn-sm btn-outline-secondary" onClick={this.onFollow}>
                 <i className="ion-plus-round"></i>
                 &nbsp;
-                Follow {article.author.username} <span className="counter">(10)</span>
+                {
+                  article.author.following ? 'Unfollow' : 'Follow'
+                }
+                &nbsp;
+                {
+                  article.author.username
+                }
               </button>
               &nbsp;&nbsp;
-              <button className="btn btn-sm btn-outline-primary">
+              <button className="btn btn-sm btn-outline-primary" onClick={this.onToggleFavorite}>
                 <i className="ion-heart"></i>
                 &nbsp;
                 Favorite Post <span className="counter">({article.favoritesCount})</span>

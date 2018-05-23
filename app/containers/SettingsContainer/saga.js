@@ -32,7 +32,7 @@ function* workerUpdateProfile(action) {
     }
   } catch (error) {
     if (error.response) {
-      yield put({ type: UPDATE_PROFILE_FAILURE, payload: error.response });
+      yield put({ type: UPDATE_PROFILE_FAILURE, payload: error.response.data });
     }
   }
 }

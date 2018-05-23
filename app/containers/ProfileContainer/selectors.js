@@ -41,6 +41,11 @@ const selectCurrentUser = () => createSelector(
   (substate) => substate.currentUser
 );
 
+const selectRedirect = () => createSelector(
+  selectProfileContainerDomain,
+  (substate) => substate.get('redirectTo')
+);
+
 export default makeSelectProfileContainer;
 export {
   selectProfileContainerDomain,
@@ -50,4 +55,5 @@ export {
   makeSelectArticlesCountByAuthor,
   makeSelectAuth,
   selectCurrentUser,
+  selectRedirect
 };

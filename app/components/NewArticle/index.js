@@ -6,8 +6,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
 import ListErrors from '../ListErrors';
 
 class NewArticle extends React.Component {

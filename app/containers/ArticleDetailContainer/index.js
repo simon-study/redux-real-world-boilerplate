@@ -46,21 +46,22 @@ export class ArticleDetailContainer extends React.Component {
   };
 
   render() {
-    // if (this.props.redirectTo && this.props.redirectTo.length) {
-    //   <Redirect to="/" />
-    // }
     const { article, currentUser, comments } = this.props
     const checkEmptyArticle = this.isEmpty(article);
     const checkEmptyCurrentUser = this.isEmpty(currentUser);
     const isModify = !checkEmptyArticle && !checkEmptyCurrentUser && currentUser.username === article.author.username;
+
     return (
-      this.props.redirectTo.length ? <Redirect to="/" /> :
+      this.props.redirectTo.length ? 
+      <Redirect to={this.props.redirectTo} /> :
       <ArticleDetail
         article={article}
         comments={comments}
         currentUser={currentUser}
         deleteArticle={this.props.deleteArticle}
         isModify={isModify}
+        toggleFavorite={this.props.toggleFavorite}
+        toggleFollow={this.props.toggleFollow}
       />
     );
   }
@@ -93,6 +94,8 @@ function mapDispatchToProps(dispatch) {
     fetchComments: (slug) => dispatch(fetchComments(slug)),
     resetComments: () => dispatch(resetComments()),
     deleteArticle: (slug) => dispatch(deleteArticle(slug)),
+    toggleFavorite: (slug, favorited) => dispatch({ type: 'TOGGLE_FAVORITE', slug, favorited }),
+    toggleFollow: (username, follow) => dispatch({ type: 'TOGGLE_FOLLOW', username, follow }),
     dispatch,
   };
 }

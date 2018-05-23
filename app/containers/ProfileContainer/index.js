@@ -51,6 +51,7 @@ export class ProfileContainer extends React.Component {
 
   render() {
     const { error, profile, articlesByAuthor, currentUser } = this.props;
+    // make redirect
     return (
       error
       ? <NotFound content={error} />
@@ -74,11 +75,16 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUserProfile: (username) => { dispatch({ type: 'GET_PROFILE_BY_AUTHOR', username }); dispatch(resetSetting()) },
+    getUserProfile: (username) => { 
+      dispatch({ type: 'GET_PROFILE_BY_AUTHOR', username }),
+      dispatch(resetSetting())
+    },
     getArticlesByAuthor: (username) => dispatch({ type: 'GET_ARTICLES_BY_AUTHOR', username }),
     resetProfileByAuthor: () => dispatch({ type: 'RESET_PROFILE_BY_AUTHOR' }),
     resetArticlesByAuthor: () => dispatch({ type: 'RESET_ARTICLES_BY_AUTHOR' }),
     toggleFavorite: (slug, favorited) => dispatch({ type: 'FAVORITE_ARTICLE', slug, favorited }),
+    // handleToggleFollow: (username, following) => console.log(username, following),
+    handleToggleFollow: (username, following) => dispatch({ type: 'TOGGLE_FOLLOW', username, following}),
     dispatch,
   };
 }
