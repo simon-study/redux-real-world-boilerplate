@@ -11,10 +11,14 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import { Redirect } from 'react-router-dom';
 import makeSelectArticlesContainer, {
-  selectArticles, selectArticlesCount,
-  selectCurrentPage, selectTags,
+  selectArticles,
+  selectArticlesCount,
+  selectCurrentPage,
+  selectTags,
   selectTagName,
+  selectRedirectTo
 } from './selectors';
 import { selectLoggedIn } from '../LoginContainer/selectors';
 import {
@@ -40,6 +44,10 @@ export class ArticlesContainer extends React.Component {
     this.props.fetchTags();
   }
 
+  componentWillUnmount() {
+    this.props.resetRedirectTo();
+  }
+
   onClickTab = (e) => {
     e.preventDefault();
     // this.props.getFeedArticles();
@@ -49,6 +57,7 @@ export class ArticlesContainer extends React.Component {
 
   render() {
     return (
+      this.props.redirectTo && this.props.redirectTo.length ? <Redirect to={this.props.redirectTo} /> :
       <div className="row">
         <div className="col-md-9">
           <div className="feed-toggle">
@@ -64,7 +73,10 @@ export class ArticlesContainer extends React.Component {
             </ul>
           </div>
 
-          <ArticleList articles={this.props.articles} toggleFavorite={(slug, favorited) => this.props.toggleFavorite(slug, favorited)}/>
+          <ArticleList
+            articles={this.props.articles}
+            toggleFavorite={(slug, favorited) => this.props.toggleFavorite(slug, favorited)}
+          />
           <Pagination
             articlesCount={this.props.articlesCount}
             currentPage={this.props.currentPage}
@@ -105,6 +117,7 @@ const mapStateToProps = createStructuredSelector({
   tags: selectTags(),
   tagName: selectTagName(),
   auth: makeAuth(),
+  redirectTo: selectRedirectTo(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -117,6 +130,7 @@ function mapDispatchToProps(dispatch) {
     fetchListArticlesTag: (tag) => dispatch(fetchListArticlesTag(tag)),
     resetTagName: () => dispatch(resetTagName()),
     toggleFavorite: (slug, favorited) => dispatch({ type: 'FAVORITE_ARTICLE', slug, favorited }),
+    resetRedirectTo: () => dispatch({ type: 'RESET_REDIRECT' }),
     dispatch,
   };
 }

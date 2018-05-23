@@ -14,6 +14,8 @@ export default function* defaultSaga() {
     takeEvery('DELETE_ARTICLE', deleteArticle),
     takeEvery('TOGGLE_FAVORITE', toggleFavorite),
     takeEvery('TOGGLE_FOLLOW', toggleFollow),
+    takeEvery('SUBMIT_COMMENT', submitComment),
+    takeEvery('DELETE_COMMENT', deleteComment),
   ];
 }
 
@@ -107,5 +109,40 @@ function* toggleFollow(action) {
     if (error.response) {
       yield put({ type: 'TOGGLE_FOLLOW_ERROR', payload: error.response.data });
     }
+  }
+}
+
+function* submitComment(action) {
+  const token = window.localStorage.getItem('token');
+  try {
+    const response = yield axios({
+      method: 'POST',
+      url: `https://conduit.productionready.io/api/articles/${action.slug}/comments`,
+      data: {
+        comment: {
+          body: action.body
+        }
+      },
+      headers: { Authorization: `Token ${token}` },
+    })
+    console.log(response);
+    yield put({ type: 'SUBMIT_COMMENT_SUCCESS', payload: response.data });
+  } catch (error) {
+    yield put({ type: 'SUBMIT_COMMENT_FAILURE', payload: error.response.data });
+  }
+}
+
+function* deleteComment(action) {
+  const token = window.localStorage.getItem('token');
+  try {
+    const response = yield axios({
+      method: 'DELETE',
+      url: `https://conduit.productionready.io/api/articles/${action.slug}/comments/${action.id}`,
+      headers: { Authorization: `Token ${token}` },
+    })
+    console.log(response);
+    yield put({ type: 'DELETE_COMMENT_SUCCESS', payload: response.data });
+  } catch (error) {
+    yield put({ type: 'DELETE_COMMENT_FAILURE', payload: error.response.data });
   }
 }

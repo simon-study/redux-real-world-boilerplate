@@ -5,9 +5,13 @@
  */
 
 import {
-  FETCH_TAGS, FETCH_DATA,
-  FETCH_ARTICLES_OFFSET, FETCH_ARTICLES_TAGS,
-  RESET_TAGNAME, GET_FEED_ARTICLES,
+  FETCH_TAGS,
+  FETCH_DATA,
+  FETCH_ARTICLES_OFFSET,
+  FETCH_ARTICLES_TAGS,
+  RESET_TAGNAME,
+  GET_FEED_ARTICLES,
+  REDIRECT_TO_SIGNUP,
 } from './constants';
 
 export function fetchTags() {
@@ -47,3 +51,9 @@ export function resetTagName() {
     type: RESET_TAGNAME,
   };
 }
+
+// export function redirectToSignUp() {
+//   return {
+//     type: REDIRECT_TO_SIGNUP,
+//   };
+// }

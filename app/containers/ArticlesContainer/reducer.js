@@ -6,11 +6,16 @@
 
 import { fromJS } from 'immutable';
 import {
-  FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE,
-  FETCH_ARTICLES_OFFSET_SUCCESS, FETCH_ARTICLES_OFFSET_FAILURE,
-  FETCH_ARTICLES_TAG_SUCCESS, FETCH_ARTICLES_TAG_FAILURE,
-  FETCH_TAGS_SUCCESS, FETCH_TAGS_FAILURE,
+  FETCH_DATA_SUCCESS,
+  FETCH_DATA_FAILURE,
+  FETCH_ARTICLES_OFFSET_SUCCESS,
+  FETCH_ARTICLES_OFFSET_FAILURE,
+  FETCH_ARTICLES_TAG_SUCCESS,
+  FETCH_ARTICLES_TAG_FAILURE,
+  FETCH_TAGS_SUCCESS,
+  FETCH_TAGS_FAILURE,
   RESET_TAGNAME,
+  REDIRECT_TO_SIGNUP,
 } from './constants';
 
 const initialState = fromJS({
@@ -21,19 +26,22 @@ const initialState = fromJS({
   currentPage: 0,
   error: null,
   tagName: '',
+  redirectTo: '',
 });
 
 function testReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_DATA_SUCCESS:
-      return state.set('articles', action.payload.articles)
-                  .set('articlesCount', action.payload.articlesCount)
-                  .set('currentPage', 0);
+      return state
+        .set('articles', action.payload.articles)
+        .set('articlesCount', action.payload.articlesCount)
+        .set('currentPage', 0);
     case FETCH_DATA_FAILURE:
       return state.set('error', action.payload.error);
     case FETCH_ARTICLES_OFFSET_SUCCESS:
-      return state.set('articles', action.payload.data.articles)
-                  .set('currentPage', action.payload.page);
+      return state
+        .set('articles', action.payload.data.articles)
+        .set('currentPage', action.payload.page);
     case FETCH_ARTICLES_OFFSET_FAILURE:
       return state.set('error', action.payload.error);
     case FETCH_TAGS_SUCCESS:
@@ -50,20 +58,23 @@ function testReducer(state = initialState, action) {
             favoritesCount: responseArticle.favoritesCount,
           };
         }
-
         return article;
       });
-
       return state.set('articles', newArticles);
     case FETCH_ARTICLES_TAG_SUCCESS:
-      return state.set('articles', action.payload.data.articles)
-                  .set('articlesCount', action.payload.data.articlesCount)
-                  .set('currentPage', 0)
-                  .set('tagName', action.payload.tagName);
+      return state
+        .set('articles', action.payload.data.articles)
+        .set('articlesCount', action.payload.data.articlesCount)
+        .set('currentPage', 0)
+        .set('tagName', action.payload.tagName);
     case FETCH_ARTICLES_TAG_FAILURE:
       return state.set('error', action.payload.error);
     case RESET_TAGNAME:
       return state.set('tagName', null);
+    case 'REDIRECT_TO_SIGNUP':
+      return state.set('redirectTo', '/signup');
+    case 'RESET_REDIRECT':
+      return state.set('redirectTo', '');
     default:
       return state;
   }

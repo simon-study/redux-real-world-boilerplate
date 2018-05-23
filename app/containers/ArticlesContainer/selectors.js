@@ -42,18 +42,25 @@ const selectTagName = () => createSelector(
   (substate) => substate.get('tagName')
 );
 
-export const makeAuth = () => createSelector(
+const makeAuth = () => createSelector(
   selectAuth,
   (substate) => substate.toJS()
+);
+
+const selectRedirectTo = () => createSelector(
+  selectArticlesContainerDomain,
+  (substate) => substate.get('redirectTo')
 );
 
 export default makeSelectArticlesContainer;
 export {
   selectArticlesContainerDomain,
+  makeAuth,
   selectArticles,
   selectArticlesCount,
   selectCurrentPage,
   selectTags,
   selectArticlesTag,
   selectTagName,
+  selectRedirectTo,
 };

@@ -23,6 +23,11 @@ import {
   getArticlesWithOffset,
   getArticlesWithAuth,
 } from '../../utils/api';
+import {
+  redirectToSignUp,
+} from './actions';
+
+
 
 export default function* watcherFetchArticles() {
   yield [
@@ -101,12 +106,16 @@ function* favoriteArticle(action) {
   const method = action.favorited ? 'DELETE' : 'POST';
   const token = window.localStorage.getItem('token');
   try {
-    const response = yield axios({
-      method,
-      url: `https://conduit.productionready.io/api/articles/${action.slug}/favorite`,
-      headers: { Authorization: `Token ${token}` },
-    });
-    yield put({ type: 'FAVORITE_SUCCESS', payload: response.data });
+    if (token) {
+      const response = yield axios({
+        method,
+        url: `https://conduit.productionready.io/api/articles/${action.slug}/favorite`,
+        headers: { Authorization: `Token ${token}` },
+      });
+      yield put({ type: 'FAVORITE_SUCCESS', payload: response.data });
+    } else {
+      yield put({ type: 'REDIRECT_TO_SIGNUP' });
+    }
   } catch (error) {
     if (error.response) {
       yield put({ type: 'FAVORITE_ERROR', payload: error.response.data });

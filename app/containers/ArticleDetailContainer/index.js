@@ -18,6 +18,7 @@ import makeSelectArticleDetailContainer, {
   selectComments,
   selectCurrentUser,
   selectRedirect,
+  selectLoggedIn,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -54,15 +55,20 @@ export class ArticleDetailContainer extends React.Component {
     return (
       this.props.redirectTo.length ? 
       <Redirect to={this.props.redirectTo} /> :
-      <ArticleDetail
-        article={article}
-        comments={comments}
-        currentUser={currentUser}
-        deleteArticle={this.props.deleteArticle}
-        isModify={isModify}
-        toggleFavorite={this.props.toggleFavorite}
-        toggleFollow={this.props.toggleFollow}
-      />
+      // <ArticleDetail
+      //   article={article}
+      //   comments={comments}
+      //   currentUser={currentUser}
+      //   deleteArticle={this.props.deleteArticle}
+      //   isModify={isModify}
+      //   toggleFavorite={this.props.toggleFavorite}
+      //   toggleFollow={this.props.toggleFollow}
+      //   loggedIn={this.props.loggedIn}
+      //   submitComment={this.props.submitComment}
+      //   slug={this.props.match.params.slug}
+      //   onDeleteComment={this.props.onDeleteComment}
+      // />
+      <ArticleDetail {...this.props} slug={this.props.match.params.slug} />
     );
   }
 }
@@ -85,6 +91,7 @@ const mapStateToProps = createStructuredSelector({
   comments: selectComments(),
   currentUser: selectCurrentUser(),
   redirectTo: selectRedirect(),
+  loggedIn: selectLoggedIn(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -96,6 +103,8 @@ function mapDispatchToProps(dispatch) {
     deleteArticle: (slug) => dispatch(deleteArticle(slug)),
     toggleFavorite: (slug, favorited) => dispatch({ type: 'TOGGLE_FAVORITE', slug, favorited }),
     toggleFollow: (username, follow) => dispatch({ type: 'TOGGLE_FOLLOW', username, follow }),
+    submitComment: (slug, body) => dispatch({ type: 'SUBMIT_COMMENT', slug, body }),
+    onDeleteComment: (slug, id) => dispatch({ type: 'DELETE_COMMENT', slug, id }),
     dispatch,
   };
 }

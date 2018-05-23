@@ -36,7 +36,7 @@ function articleDetailContainerReducer(state = initialState, action) {
         .set('redirectTo', '')
         .set('error', {});
     case FETCH_COMMENTS_SUCCESS:
-      return state.set('comments', action.payload.comments);
+      return state.set('comments', fromJS(action.payload.comments));
     case FETCH_COMMENTS_FAILURE:
       return state.set('error', action.payload.error);
     case RESET_COMMENTS:
@@ -52,9 +52,11 @@ function articleDetailContainerReducer(state = initialState, action) {
         .setIn(['article', 'favorited'], action.payload.article.favorited)
         .setIn(['article', 'favoritesCount'], action.payload.article.favoritesCount);
     case 'TOGGLE_FOLLOW_SUCCESS':
-      console.log(action.payload)
       return state
         .setIn(['article', 'author', 'following'], action.payload.profile.following);
+    case 'SUBMIT_COMMENT_SUCCESS':
+      return state.updateIn(['comments'], arr => arr.push(action.payload.comment));
+    case 'DELETE_COMMENT_SUCCESS':
     default:
       return state;
   }

@@ -51,7 +51,15 @@ class ArticleDetail extends React.Component {
           />
           <div className="row">
             <div className="col-xs-12 col-md-8 offset-md-2">
-              <Comment comments={comments} />
+              <Comment
+                comments={comments}
+                loggedIn={this.props.loggedIn}
+                submitComment={this.props.submitComment}
+                slug={this.props.slug}
+                currentUser={this.props.currentUser}
+                onDeleteComment={this.props.onDeleteComment}
+                currentUser={this.props.currentUser}
+              />
             </div>
           </div>
         </div>
