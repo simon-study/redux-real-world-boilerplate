@@ -41,6 +41,11 @@ const selectLoggedIn = () => createSelector(
   (substate) => substate.get('loggedIn')
 );
 
+const selectLoading = () => createSelector(
+  selectArticleDetailContainerDomain,
+  (substate) => substate.get('isLoading')
+);
+
 export default makeSelectArticleDetailContainer;
 export {
   selectArticleDetailContainerDomain,
@@ -49,5 +54,6 @@ export {
   selectAuth,
   selectCurrentUser,
   selectRedirect,
-  selectLoggedIn
+  selectLoggedIn,
+  selectLoading,
 };

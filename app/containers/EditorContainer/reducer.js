@@ -41,8 +41,8 @@ function editorContainerReducer(state = initialState, action) {
       return state.set('tag', action.tag);
     case ADD_TAG:
       return state.update('tagList', tagList => tagList.push(action.tag));
-    case RESET_TAG:
-      return state.set('tag', '');
+    // case RESET_TAG:
+    //   return state.set('tag', '');
     case NEW_ARTICLE_SUCCESS:
       return state.set('article', action.payload.article)
                   .set('flag', true);

@@ -41,6 +41,23 @@ export class EditorContainer extends React.Component {
   }
   render() {
     return (
+      // <NewArticle
+      //   title={this.props.title}
+      //   description={this.props.description}
+      //   body={this.props.body}
+      //   tag={this.props.tag}
+      //   tagList={this.props.tagList}
+      //   changeTitle={this.props.changeTitle}
+      //   changeDescription={this.props.changeDescription}
+      //   changeBody={this.props.changeBody}
+      //   changeTag={this.props.changeTag}
+      //   addTag={this.props.addTag}
+      //    resetTag={this.props.resetTag} 
+      //   submitForm={this.props.submitForm}
+      //   article={this.props.article}
+      //   errors={this.props.errors}
+      //   resetArticle={this.props.resetArticle}
+      // />
       <NewArticle
         title={this.props.title}
         description={this.props.description}
@@ -52,7 +69,6 @@ export class EditorContainer extends React.Component {
         changeBody={this.props.changeBody}
         changeTag={this.props.changeTag}
         addTag={this.props.addTag}
-        resetTag={this.props.resetTag}
         submitForm={this.props.submitForm}
         article={this.props.article}
         errors={this.props.errors}
@@ -72,7 +88,7 @@ EditorContainer.propTypes = {
   changeBody: PropTypes.func.isRequired,
   changeTag: PropTypes.func.isRequired,
   addTag: PropTypes.func.isRequired,
-  resetTag: PropTypes.func.isRequired,
+  // resetTag: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
   resetArticle: PropTypes.func.isRequired,
   article: PropTypes.object.isRequired,
@@ -97,7 +113,7 @@ function mapDispatchToProps(dispatch) {
     changeBody: (body) => dispatch(changeBody(body)),
     changeTag: (tag) => dispatch(changeTag(tag)),
     addTag: (tag) => dispatch(addTag(tag)),
-    resetTag: () => dispatch(resetTag()),
+    // resetTag: () => dispatch(resetTag()),
     submitForm: (article) => dispatch(submitForm(article)),
     resetArticle: () => dispatch(resetArticle()),
     dispatch,

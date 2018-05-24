@@ -54,6 +54,9 @@ function profileContainerReducer(state = initialState, action) {
       return state.setIn(['profile', 'following'], action.payload.profile.following);
     case 'REDIRECT_PAGE':
       return state.set('redirectTo', '/signup');
+    case 'TOGGLE_ARTICLES_SUCCESS':
+    console.log(action.payload.articles)
+      return state.set('articlesByAuthor', action.payload.articles)
     default:
       return state;
   }

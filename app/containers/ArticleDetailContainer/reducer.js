@@ -57,6 +57,7 @@ function articleDetailContainerReducer(state = initialState, action) {
     case 'SUBMIT_COMMENT_SUCCESS':
       return state.updateIn(['comments'], arr => arr.push(action.payload.comment));
     case 'DELETE_COMMENT_SUCCESS':
+      return state.set('comments', state.get('comments').filter(item => item.id !== action.payload))
     default:
       return state;
   }

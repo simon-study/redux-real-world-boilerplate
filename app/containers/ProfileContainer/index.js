@@ -30,7 +30,6 @@ export class ProfileContainer extends React.Component {
     const username = this.props.match.params.username;
     this.props.getUserProfile(username);
     this.props.getArticlesByAuthor(username);
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,12 +49,11 @@ export class ProfileContainer extends React.Component {
   }
 
   render() {
-    const { error, profile, articlesByAuthor, currentUser } = this.props;
-    // make redirect
+    const { error, profile, articlesByAuthor, currentUser, toggleArticleByAuthor } = this.props;
     return (
       error
       ? <NotFound content={error} />
-      : <Profile {...this.props}/>
+      : <Profile {...this.props} />
     );
   }
 }
@@ -83,8 +81,9 @@ function mapDispatchToProps(dispatch) {
     resetProfileByAuthor: () => dispatch({ type: 'RESET_PROFILE_BY_AUTHOR' }),
     resetArticlesByAuthor: () => dispatch({ type: 'RESET_ARTICLES_BY_AUTHOR' }),
     toggleFavorite: (slug, favorited) => dispatch({ type: 'FAVORITE_ARTICLE', slug, favorited }),
-    // handleToggleFollow: (username, following) => console.log(username, following),
     handleToggleFollow: (username, following) => dispatch({ type: 'TOGGLE_FOLLOW', username, following}),
+    toggleArticleByAuthor: (tab, username) => dispatch({ type: 'TOGGLE_ARTICLES_BY_AUTHOR', tab, username }),
+    // getAticleByAuthor: (tab, username) => dispatch({ type: 'GET_ARTICLES', tab, username }),
     dispatch,
   };
 }

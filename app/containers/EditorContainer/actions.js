@@ -50,12 +50,6 @@ export function addTag(tag) {
   };
 }
 
-export function resetTag() {
-  return {
-    type: RESET_TAG,
-  };
-}
-
 export function submitForm(article) {
   return {
     type: NEW_ARTICLE,

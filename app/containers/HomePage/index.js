@@ -30,7 +30,8 @@ const HomePage = () => (
       <Route path="/signup" component={SignUpContainer} />
       <Route path="/settings" component={SettingsContainer} />
       <Route path="/editor" component={EditorContainer} />
-      <Route path="/profile/@:username" component={ProfileContainer} />
+      <Route exact path="/profile/@:username" component={ProfileContainer} />
+      <Route path="/profile/@:username/favorites" component={ProfileContainer} />
       <Route path="/article/:slug" component={ArticleDetailContainer} />
     </Switch>
     <Footer />

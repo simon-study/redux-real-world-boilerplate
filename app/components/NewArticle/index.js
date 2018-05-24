@@ -9,41 +9,56 @@ import { Redirect } from 'react-router-dom';
 import ListErrors from '../ListErrors';
 
 class NewArticle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: '',
+      description: '',
+      body: '',
+      tag: '',
+      tagList: [],
+    }
+  }
   componentWillUnmount() {
     this.props.resetArticle();
   }
 
-  onChangeTitle = (e) => {
-    this.props.changeTitle(e.target.value);
-  }
-
-  onChangeDescription = (e) => {
-    this.props.changeDescription(e.target.value);
-  }
-
-  onChangeBody = (e) => {
-    this.props.changeBody(e.target.value);
-  }
-
-  onChangeTag = (e) => {
-    this.props.changeTag(e.target.value);
+  onChangeInput = (e) => {
+    const change = {};
+    change[e.target.name] = e.target.value;
+    this.setState(change);
   }
 
   onAddTag = (e) => {
     e.preventDefault();
     if (e.keyCode === 13) {
-      this.props.addTag(this.props.tag);
-      this.props.resetTag();
+      if (this.state.tagList.indexOf(this.state.tag) === -1) {
+        this.setState(previousState => ({
+          tagList: [...previousState.tagList, this.state.tag],
+          tag: '',
+        }));
+      }
     }
+  }
+
+  onDeleteTag = (tag) => {
+    this.setState((previousState) => {
+      return {
+        tagList: previousState.tagList.filter(item => {
+          return item !== tag
+        })
+      }
+    })
   }
 
   onSubmit = (e) => {
     e.preventDefault();
+    const { title, description, body, tagList } = this.state;
     const article = {
-      title: this.props.title,
-      description: this.props.description,
-      body: this.props.body,
-      tagList: this.props.tagList
+      title,
+      description,
+      body,
+      tagList,
     }
     this.props.submitForm(article);
   }
@@ -53,6 +68,7 @@ class NewArticle extends React.Component {
   };
 
   render() {
+    const { title, description, body, tag, tagList } = this.state;
     return (
       !this.isEmpty(this.props.article) ? <Redirect to={`/article/${this.props.article.slug}`}/> :
       <div className="editor-page">
@@ -68,8 +84,8 @@ class NewArticle extends React.Component {
                       className="form-control form-control-lg"
                       placeholder="Article Title"
                       name="title"
-                      value={this.props.title}
-                      onChange={this.onChangeTitle}
+                      value={title}
+                      onChange={this.onChangeInput}
                     />
                   </fieldset>
                   <fieldset className="form-group">
@@ -78,8 +94,8 @@ class NewArticle extends React.Component {
                       className="form-control"
                       placeholder="What's this article about?"
                       name="description"
-                      value={this.props.description}
-                      onChange={this.onChangeDescription}
+                      value={description}
+                      onChange={this.onChangeInput}
                     />
                   </fieldset>
                   <fieldset className="form-group">
@@ -87,9 +103,9 @@ class NewArticle extends React.Component {
                       className="form-control"
                       rows="8"
                       placeholder="Write your article (in markdown)"
-                      name="content"
-                      value={this.props.body}
-                      onChange={this.onChangeBody}
+                      name="body"
+                      value={body}
+                      onChange={this.onChangeInput}
                     ></textarea>
                   </fieldset>
                   <fieldset className="form-group">
@@ -97,24 +113,24 @@ class NewArticle extends React.Component {
                       type="text"
                       className="form-control"
                       placeholder="Enter tags"
-                      name="tags"
-                      value={this.props.tag}
-                      onChange={this.onChangeTag}
+                      name="tag"
+                      value={tag}
+                      onChange={this.onChangeInput}
                       onKeyUp={this.onAddTag}
                     />
                     <div className="tag-list">
                       {
-                        this.props.tagList && this.props.tagList.length > 0 && this.props.tagList.map(tag => {
+                        tagList && tagList.length > 0 && tagList.map(tag => {
                           return (
-                            <span className="tag-default tag-pill" key={tag}>
-                              <i  className="ion-close-round">
+                            <span className="tag-default tag-pill" key={tag} >
+                              <i  className="ion-close-round" onClick={() => this.onDeleteTag(tag)}>
                               </i>
                               {tag}
                             </span>
                           );
                         })
                       }
-                    </div>
+                    </div> 
                   </fieldset>
                   <button
                     className="btn btn-lg pull-xs-right btn-primary"
@@ -139,7 +155,6 @@ NewArticle.propTypes = {
   changeDescription: PropTypes.func.isRequired,
   changeBody: PropTypes.func.isRequired,
   changeTag: PropTypes.func.isRequired,
-  resetTag: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   tag: PropTypes.string.isRequired,

@@ -19,6 +19,7 @@ import makeSelectArticleDetailContainer, {
   selectCurrentUser,
   selectRedirect,
   selectLoggedIn,
+  selectLoading,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -39,7 +40,7 @@ export class ArticleDetailContainer extends React.Component {
 
   componentWillUnmount() {
     this.props.resetArticle();
-    // this.props.resetComments();
+    this.props.resetComments();
   }
 
   isEmpty = (obj) => {
@@ -68,7 +69,7 @@ export class ArticleDetailContainer extends React.Component {
       //   slug={this.props.match.params.slug}
       //   onDeleteComment={this.props.onDeleteComment}
       // />
-      <ArticleDetail {...this.props} slug={this.props.match.params.slug} />
+      (!this.props.isLoading ? <ArticleDetail {...this.props} slug={this.props.match.params.slug} /> : <div>Loading</div>)
     );
   }
 }
@@ -92,6 +93,7 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser(),
   redirectTo: selectRedirect(),
   loggedIn: selectLoggedIn(),
+  isLoading: selectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {

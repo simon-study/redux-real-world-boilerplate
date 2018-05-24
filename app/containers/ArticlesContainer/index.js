@@ -48,7 +48,7 @@ export class ArticlesContainer extends React.Component {
     this.props.resetRedirectTo();
   }
 
-  onClickTab = (e) => {
+  toggleArticleByTab = (e) => {
     e.preventDefault();
     // this.props.getFeedArticles();
     this.props.getAllArticles();
@@ -62,8 +62,27 @@ export class ArticlesContainer extends React.Component {
         <div className="col-md-9">
           <div className="feed-toggle">
             <ul className="nav nav-pills outline-active">
+              {/* <li className="nav-item">
+                <a className={this.props.tagName ? 'nav-link' : 'nav-link active'}
+                  href="" onClick={this.toggleArticleByTab}
+                >Your Feed
+                </a>
+              </li> */}
               <li className="nav-item">
-                <a className={this.props.tagName ? 'nav-link' : 'nav-link active'} href="" onClick={(e) => this.onClickTab(e)}>Global Feed</a>
+                <a className="nav-link"
+                  href="" onClick={this.toggleArticleByTab}
+                >Your Feed
+                </a>
+              </li>
+              <li className="nav-item">
+                {/* <a className={this.props.tagName ? 'nav-link' : 'nav-link active'} href=""
+                  onClick={this.toggleArticleByTab}
+                >Global Feed
+                </a> */}
+                <a className="nav-link" href=""
+                  onClick={this.toggleArticleByTab}
+                >Global Feed
+                </a>
               </li>
               <li className="nav-item">
                 <a className={this.props.tagName ? 'nav-link active' : 'nav-link'} href="">

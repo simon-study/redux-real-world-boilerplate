@@ -15,6 +15,13 @@ class Profile extends React.Component {
     this.props.handleToggleFollow(username, following)
   }
 
+  toggleTab = (e) => {
+    const tab = e.target.dataset.tab;
+    const { username } = this.props.profile;
+    console.log(tab, username);
+    this.props.toggleArticleByAuthor(tab, username);
+  }
+
   render() {
     const { image, username, bio, following } = this.props.profile;
     return (
@@ -58,12 +65,21 @@ class Profile extends React.Component {
               <div className="articles-toggle">
                 <ul className="nav nav-pills outline-active">
                   <li className="nav-item">
-                    <a className="nav-link active" href="">My Articles</a>
+                    <NavLink to={`/profile/@${username}`}
+                      exact className='nav-link'
+                      data-tab="author"
+                      onClick={this.toggleTab}
+                    >
+                      My Articles
+                    </NavLink>
                   </li>
                   <li className="nav-item">
                     <NavLink
-                      to={`${username}/favorites`}
-                      className="nav-link">
+                      to={`/profile/@${username}/favorites`}
+                      className='nav-link'
+                      data-tab="favorited"
+                      onClick={this.toggleTab}
+                    >
                       Favorited Articles
                     </NavLink>
                   </li>

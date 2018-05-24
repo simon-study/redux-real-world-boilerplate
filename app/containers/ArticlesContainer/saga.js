@@ -26,8 +26,7 @@ import {
 import {
   redirectToSignUp,
 } from './actions';
-
-
+import { push } from 'react-router-redux';
 
 export default function* watcherFetchArticles() {
   yield [
@@ -114,7 +113,8 @@ function* favoriteArticle(action) {
       });
       yield put({ type: 'FAVORITE_SUCCESS', payload: response.data });
     } else {
-      yield put({ type: 'REDIRECT_TO_SIGNUP' });
+      // yield put({ type: 'REDIRECT_TO_SIGNUP' });
+      yield put(push("/signup"));
     }
   } catch (error) {
     if (error.response) {

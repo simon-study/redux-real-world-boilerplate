@@ -20,12 +20,20 @@ export default function* defaultSaga() {
 }
 
 function* fetchArticleDetail(action) {
+  const token = window.localStorage.getItem('token');
   try {
-    const response = yield call(getArticle, action.slug);
-    yield put({
-      type: FETCH_ARTICLE_DETAIL_SUCCESS,
-      payload: response.data,
-    });
+    if (token) {
+      // const response = yield call(getArticle, action.slug);
+      const response = yield axios({
+        method: 'GET',
+        url: `https://conduit.productionready.io/api/articles/${action.slug}`,
+        headers: { Authorization: token ? `Token ${token}` : '' },
+      });
+      yield put({
+        type: FETCH_ARTICLE_DETAIL_SUCCESS,
+        payload: response.data,
+      });
+    }
   } catch (error) {
     yield put({
       type: FETCH_ARTICLE_DETAIL_FAILURE,
@@ -140,8 +148,7 @@ function* deleteComment(action) {
       url: `https://conduit.productionready.io/api/articles/${action.slug}/comments/${action.id}`,
       headers: { Authorization: `Token ${token}` },
     })
-    console.log(response);
-    yield put({ type: 'DELETE_COMMENT_SUCCESS', payload: response.data });
+    yield put({ type: 'DELETE_COMMENT_SUCCESS', payload: action.id });
   } catch (error) {
     yield put({ type: 'DELETE_COMMENT_FAILURE', payload: error.response.data });
   }

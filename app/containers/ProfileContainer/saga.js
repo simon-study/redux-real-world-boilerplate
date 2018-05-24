@@ -11,13 +11,14 @@ import {
   GET_ARTICLES_BY_AUTHOR,
   FAVORITE_ARTICLE,
   TOGGLE_FOLLOW,
+  TOGGLE_ARTICLES_SUCCESS,
+  TOGGLE_ARTICLES_BY_AUTHOR,
 } from './constants';
 import {
   getProfile,
   getArticlesByAuthor
 } from '../../utils/api';
-
-const token = window.localStorage.getItem('token');
+import { push } from 'react-router-redux';
 
 export default function* defaultSaga() {
   yield [
@@ -25,6 +26,7 @@ export default function* defaultSaga() {
     takeEvery(GET_ARTICLES_BY_AUTHOR, workerGetArticlesByAuthor),
     takeEvery(FAVORITE_ARTICLE, favoriteArticle),
     takeEvery(TOGGLE_FOLLOW, toggleFollow),
+    takeEvery(TOGGLE_ARTICLES_BY_AUTHOR, toggleFetchArticlesByAuthor),
   ];
 }
 
@@ -40,7 +42,7 @@ function* workerGetProfile(action) {
 }
 
 function* workerGetArticlesByAuthor(action) {
-  // const token = window.localStorage.getItem('token');
+  const token = window.localStorage.getItem('token');
   try {
     const response = yield axios({
       method: 'GET',
@@ -57,16 +59,36 @@ function* workerGetArticlesByAuthor(action) {
   }
 }
 
-function* favoriteArticle(action) {
-  const method = action.favorited ? 'DELETE' : 'POST';
-  // const token = window.localStorage.getItem('token');
+function* toggleFetchArticlesByAuthor(action) {
+  const token = window.localStorage.getItem('token');
   try {
     const response = yield axios({
-      method,
-      url: `https://conduit.productionready.io/api/articles/${action.slug}/favorite`,
+      method: 'GET',
+      url: `https://conduit.productionready.io/api/articles/?${action.tab}=${action.username}&limit=5`,
       headers: { Authorization: `Token ${token}` },
     });
-    yield put({ type: 'FAVORITE_IN_PROFILE_SUCCESS', payload: response.data });
+    yield put({ type: TOGGLE_ARTICLES_SUCCESS, payload: response.data });
+  } catch (error) {
+    if (error.response) {
+      yield put({ type: 'TOGGLE_ARTICLES_FAILURE', payload: error.response.data })
+    }
+  }
+}
+
+function* favoriteArticle(action) {
+  const method = action.favorited ? 'DELETE' : 'POST';
+  const token = window.localStorage.getItem('token');
+  try {
+    if (token) {
+      const response = yield axios({
+        method,
+        url: `https://conduit.productionready.io/api/articles/${action.slug}/favorite`,
+        headers: { Authorization: `Token ${token}` },
+      });
+      yield put({ type: 'FAVORITE_IN_PROFILE_SUCCESS', payload: response.data });
+    } else {
+      yield put(push('/signup'));
+    }
   } catch (error) {
     if (error.response) {
       yield put({ type: 'FAVORITE_IN_PROFILE_SUCCESS', payload: error.response.data });
@@ -75,8 +97,8 @@ function* favoriteArticle(action) {
 }
 
 function* toggleFollow(action) {
-  console.log(action.username);
   const method = action.following ? 'DELETE' : 'POST';
+  const token = window.localStorage.getItem('token');
   try {
     if (token) {
       const response = yield axios({
@@ -84,10 +106,9 @@ function* toggleFollow(action) {
         url: `https://conduit.productionready.io/api/profiles/${action.username}/follow`,
         headers: { Authorization: `Token ${token}` },
       })
-
       yield put({ type: 'TOGGLE_FOLLOW_SUCCESS', payload: response.data });
     } else {
-      yield put({ type: 'REDIRECT_PAGE' })
+      yield put(push('/signup'));
     }
   } catch (error) {
     if (error.response) {
