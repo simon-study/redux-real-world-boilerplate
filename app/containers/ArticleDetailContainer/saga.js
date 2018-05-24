@@ -1,6 +1,22 @@
 import axios from 'axios';
 import { takeEvery, put, call } from 'redux-saga/effects';
-import { getArticle, getComments } from '../../utils/api';
+import {
+  getComments,
+  followRequest,
+  postComment,
+  deleteCommentAPI,
+  toggleFavoriteAPI,
+  deleteArticleAPI,
+  getArticleDetailAPI,
+} from '../../utils/api';
+
+import {
+  submitCommentSuccess,
+  submitCommentError,
+  deleteCommentSuccess,
+  deleteCommentError,
+} from './actions';
+
 import {
   FETCH_ARTICLE_DETAIL_SUCCESS, FETCH_ARTICLE_DETAIL_FAILURE,
   FETCH_COMMENTS_SUCCESS, FETCH_COMMENTS_FAILURE,
@@ -22,18 +38,11 @@ export default function* defaultSaga() {
 function* fetchArticleDetail(action) {
   const token = window.localStorage.getItem('token');
   try {
-    if (token) {
-      // const response = yield call(getArticle, action.slug);
-      const response = yield axios({
-        method: 'GET',
-        url: `https://conduit.productionready.io/api/articles/${action.slug}`,
-        headers: { Authorization: token ? `Token ${token}` : '' },
-      });
-      yield put({
-        type: FETCH_ARTICLE_DETAIL_SUCCESS,
-        payload: response.data,
-      });
-    }
+    const response = yield call(getArticleDetailAPI, action.slug, token)
+    yield put({
+      type: FETCH_ARTICLE_DETAIL_SUCCESS,
+      payload: response.data,
+    });
   } catch (error) {
     yield put({
       type: FETCH_ARTICLE_DETAIL_FAILURE,
@@ -60,11 +69,7 @@ function* fetchComments(action) {
 function* deleteArticle(action) {
   const token = window.localStorage.getItem('token');
   try {
-    const response = yield axios({
-      method: 'DELETE',
-      url: `https://conduit.productionready.io/api/articles/${action.slug}`,
-      headers: { Authorization: `Token ${token}` },
-    });
+    const response = yield call(deleteArticleAPI, action.slug, token);
     if (response.status >= 200 && response.status < 300) {
       yield put({ type: 'DELETE_ARTICLE_SUCCESS' });
     }
@@ -81,12 +86,7 @@ function* toggleFavorite(action) {
 
   try {
     if (token) {
-      const response = yield axios({
-        method,
-        url: `https://conduit.productionready.io/api/articles/${action.slug}/favorite`,
-        headers: { Authorization: `Token ${token}` },
-      });
-
+      const response = yield call(toggleFavoriteAPI, action.slug, method, token);
       yield put({ type: 'FAVORITE_ON_ARTICLE_DETAIL_SUCCESS', payload: response.data });
     } else {
       yield put({ type: 'REDIRECT_PAGE' });
@@ -104,11 +104,7 @@ function* toggleFollow(action) {
 
   try {
     if (token) {
-      const response = yield axios({
-        method: method,
-        url: `https://conduit.productionready.io/api/profiles/${action.username}/follow`,
-        headers: { Authorization: `Token ${token}` },
-      })
+      const response = yield call(followRequest, method, action.username, token);
       yield put({ type: 'TOGGLE_FOLLOW_SUCCESS', payload: response.data });
     } else {
       yield put({ type: 'REDIRECT_PAGE' });
@@ -123,33 +119,27 @@ function* toggleFollow(action) {
 function* submitComment(action) {
   const token = window.localStorage.getItem('token');
   try {
-    const response = yield axios({
-      method: 'POST',
-      url: `https://conduit.productionready.io/api/articles/${action.slug}/comments`,
-      data: {
-        comment: {
-          body: action.body
-        }
-      },
-      headers: { Authorization: `Token ${token}` },
-    })
-    console.log(response);
-    yield put({ type: 'SUBMIT_COMMENT_SUCCESS', payload: response.data });
+    const response = yield call(postComment, action.slug, action.body, token);
+    yield put(submitCommentSuccess(response));
   } catch (error) {
-    yield put({ type: 'SUBMIT_COMMENT_FAILURE', payload: error.response.data });
+    if (error.response) {
+      yield put(submitCommentError(error));
+    }
   }
 }
 
 function* deleteComment(action) {
   const token = window.localStorage.getItem('token');
   try {
-    const response = yield axios({
-      method: 'DELETE',
-      url: `https://conduit.productionready.io/api/articles/${action.slug}/comments/${action.id}`,
-      headers: { Authorization: `Token ${token}` },
-    })
-    yield put({ type: 'DELETE_COMMENT_SUCCESS', payload: action.id });
+    const response = yield call(deleteCommentAPI, action.slug, action.id, token);
+    yield put(deleteCommentSuccess(action.id));
   } catch (error) {
-    yield put({ type: 'DELETE_COMMENT_FAILURE', payload: error.response.data });
+    yield put(deleteCommentError(error));
   }
 }
+
+
+
+
+
+

@@ -17,11 +17,12 @@ import {
   FETCH_ARTICLES_TAG_FAILURE,
 } from './constants';
 import {
-  getArticles,
   getTags,
   getArticlesWithTag,
   getArticlesWithOffset,
-  getArticlesWithAuth,
+  getArticlesAPI,
+  toggleFavoriteAPI,
+  getListFeed,
 } from '../../utils/api';
 import {
   redirectToSignUp,
@@ -35,7 +36,7 @@ export default function* watcherFetchArticles() {
     takeEvery(FETCH_ARTICLES_OFFSET, workerFetchArticlesWithOffset),
     takeEvery(FETCH_ARTICLES_TAGS, fetchArticlesTags),
     takeEvery(FAVORITE_ARTICLE, favoriteArticle),
-    // takeEvery('GET_FEED_ARTICLES', getFeedArticles),
+    takeEvery('TOGGLE_LIST_ARTICLES', workerToggleListArticle),
   ];
 }
 
@@ -43,10 +44,10 @@ function* fetchArticles() {
   const token = window.localStorage.getItem('token');
   try {
     let response;
-    if (!token) {
-      response = yield call(getArticles);
+    if (token) {
+      response = yield call(getListFeed, token);
     } else {
-      response = yield call(getArticlesWithAuth, token);
+      response = yield call(getArticlesAPI, token);
     }
     yield put({ type: FETCH_DATA_SUCCESS, payload: response.data });
   } catch (error) {
@@ -106,14 +107,9 @@ function* favoriteArticle(action) {
   const token = window.localStorage.getItem('token');
   try {
     if (token) {
-      const response = yield axios({
-        method,
-        url: `https://conduit.productionready.io/api/articles/${action.slug}/favorite`,
-        headers: { Authorization: `Token ${token}` },
-      });
+      const response = yield call(toggleFavoriteAPI, action.slug, method, token);
       yield put({ type: 'FAVORITE_SUCCESS', payload: response.data });
     } else {
-      // yield put({ type: 'REDIRECT_TO_SIGNUP' });
       yield put(push("/signup"));
     }
   } catch (error) {
@@ -123,18 +119,19 @@ function* favoriteArticle(action) {
   }
 }
 
-// function* getFeedArticles() {
-//   const token = window.localStorage.getItem('token');
-//   try {
-//     const response = yield axios({
-//       method: 'GET',
-//       url: 'https://conduit.productionready.io/api/articles/feed',
-//       headers: { Authorization: `Token ${token}` },
-//     });
-//     yield put({ type: 'FETCH_DATA_SUCCESS', payload: response.data });
-//   } catch (error) {
-//     if (error.response) {
-//       yield put({ type: 'FETCH_DATA_FAILURE', payload: error.response.data });
-//     }
-//   }
-// }
+function* workerToggleListArticle(action) {
+  const token = window.localStorage.getItem('token');
+  try {
+    let response;
+    if (action.tab === 'feed') {
+      response = yield call(getListFeed, token);
+    } else {
+      response = yield call(getArticlesAPI, token);
+    }
+    yield put({ type: 'GET_LIST_ARTICLE_SUCCESS', payload: response.data });
+  } catch (error) {
+    if (error.response) {
+      yield put({ type: 'GET_LIST_ARTICLE_FAILURE', payload: error.response.data })
+    }
+  }
+}

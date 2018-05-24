@@ -52,6 +52,11 @@ const selectRedirectTo = () => createSelector(
   (substate) => substate.get('redirectTo')
 );
 
+const selectLoggedIn = () => createSelector(
+  makeAuth(),
+  (substate) => substate.loggedIn
+);
+
 export default makeSelectArticlesContainer;
 export {
   selectArticlesContainerDomain,
@@ -63,4 +68,5 @@ export {
   selectArticlesTag,
   selectTagName,
   selectRedirectTo,
+  selectLoggedIn,
 };

@@ -69,7 +69,8 @@ export class ArticleDetailContainer extends React.Component {
       //   slug={this.props.match.params.slug}
       //   onDeleteComment={this.props.onDeleteComment}
       // />
-      (!this.props.isLoading ? <ArticleDetail {...this.props} slug={this.props.match.params.slug} /> : <div>Loading</div>)
+      // (!this.props.isLoading ? <ArticleDetail {...this.props} slug={this.props.match.params.slug} /> : <div>Loading</div>)
+      <ArticleDetail {...this.props} slug={this.props.match.params.slug} isModify={isModify} />
     );
   }
 }

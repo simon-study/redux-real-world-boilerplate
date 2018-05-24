@@ -62,3 +62,17 @@ export function resetArticle() {
     type: RESET_NEW_ARTICLE,
   };
 }
+
+export function newArticleSuccess(response) {
+  return {
+    type: 'NEW_ARTICLE_SUCCESS',
+    payload: response.data,
+  }
+}
+
+export function newArticleFailure(error) {
+  return {
+    type: 'NEW_ARTICLE_FAILURE',
+    payload: error.response.data
+  }
+}

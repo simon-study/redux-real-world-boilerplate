@@ -75,6 +75,12 @@ function testReducer(state = initialState, action) {
       return state.set('redirectTo', '/signup');
     case 'RESET_REDIRECT':
       return state.set('redirectTo', '');
+    case 'GET_LIST_ARTICLE_SUCCESS':
+    console.log(action.payload)
+      return state
+        .set('articles', action.payload.articles)
+        .set('articlesCount', action.payload.articlesCount)
+        .set('currentPage', 0);
     default:
       return state;
   }

@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { takeEvery, put } from 'redux-saga/effects';
+import { takeEvery, put, call } from 'redux-saga/effects';
+import { newArticleAPi } from '../../utils/api';
+import { newArticleFailure, newArticleSuccess } from './actions';
 
 // Individual exports for testing
 export default function* defaultSaga() {
@@ -9,18 +11,11 @@ export default function* defaultSaga() {
 function* workerNewArticle(action) {
   const token = window.localStorage.getItem('token');
   try {
-    const response = yield axios({
-      method: 'POST',
-      url: 'https://conduit.productionready.io/api/articles',
-      headers: { authorization: `Token ${token}` },
-      data: {
-        article: action.article,
-      },
-    });
-    yield put({ type: 'NEW_ARTICLE_SUCCESS', payload: response.data });
+    const response = yield call(newArticleAPi, action.article, token);
+    yield put(newArticleSuccess(response));
   } catch (error) {
     if (error.response) {
-      yield put({ type: 'NEW_ARTICLE_FAILURE', payload: error.response.data });
+      yield put(newArticleFailure(error));
     }
   }
 }

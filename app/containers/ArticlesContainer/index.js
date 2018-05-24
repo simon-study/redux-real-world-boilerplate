@@ -18,9 +18,11 @@ import makeSelectArticlesContainer, {
   selectCurrentPage,
   selectTags,
   selectTagName,
-  selectRedirectTo
+  selectRedirectTo,
+  selectLoggedIn,
+  makeAuth,
 } from './selectors';
-import { selectLoggedIn } from '../LoginContainer/selectors';
+// import { selectLoggedIn } from '../LoginContainer/selectors';
 import {
   fetchTags,
   getAllArticles,
@@ -34,13 +36,12 @@ import saga from './saga';
 import ArticleList from '../../components/ArticleList';
 import Pagination from '../../components/Pagination';
 import PopularTags from '../../components/PopularTags';
-import { makeAuth } from './selectors';
+import Arcordion from '../../components/Arcordion';
+// import { makeAuth } from './selectors';
 
 export class ArticlesContainer extends React.Component {
   componentWillMount() {
-    const token = window.localStorage.getItem('token');
     this.props.getAllArticles();
-    // token ? this.props.getFeedArticles() : this.props.getAllArticles();
     this.props.fetchTags();
   }
 
@@ -50,46 +51,23 @@ export class ArticlesContainer extends React.Component {
 
   toggleArticleByTab = (e) => {
     e.preventDefault();
-    // this.props.getFeedArticles();
-    this.props.getAllArticles();
+    this.props.toggleListArticle(e.target.dataset.tab);
     this.props.resetTagName();
   }
 
   render() {
+    console.log(this.props.loggedIn)
     return (
       this.props.redirectTo && this.props.redirectTo.length ? <Redirect to={this.props.redirectTo} /> :
       <div className="row">
         <div className="col-md-9">
           <div className="feed-toggle">
-            <ul className="nav nav-pills outline-active">
-              {/* <li className="nav-item">
-                <a className={this.props.tagName ? 'nav-link' : 'nav-link active'}
-                  href="" onClick={this.toggleArticleByTab}
-                >Your Feed
-                </a>
-              </li> */}
-              <li className="nav-item">
-                <a className="nav-link"
-                  href="" onClick={this.toggleArticleByTab}
-                >Your Feed
-                </a>
-              </li>
-              <li className="nav-item">
-                {/* <a className={this.props.tagName ? 'nav-link' : 'nav-link active'} href=""
-                  onClick={this.toggleArticleByTab}
-                >Global Feed
-                </a> */}
-                <a className="nav-link" href=""
-                  onClick={this.toggleArticleByTab}
-                >Global Feed
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className={this.props.tagName ? 'nav-link active' : 'nav-link'} href="">
-                  {this.props.tagName && `#${this.props.tagName}`}
-                </a>
-              </li>
-            </ul>
+            <Arcordion
+              toggleListArticle={this.props.toggleListArticle}
+              resetTagName={this.props.resetTagName}
+              tagName={this.props.tagName}
+              loggedIn={this.props.loggedIn}
+            />
           </div>
 
           <ArticleList
@@ -118,12 +96,12 @@ ArticlesContainer.propTypes = {
   getAllArticles: PropTypes.func.isRequired,
   getFeedArticles: PropTypes.func.isRequired,
   setPage: PropTypes.func.isRequired,
-  articles: PropTypes.any.isRequired,
+  // articles: PropTypes.any.isRequired,
   currentPage: PropTypes.number.isRequired,
-  articlesCount: PropTypes.number.isRequired,
+  // articlesCount: PropTypes.number.isRequired,
   fetchTags: PropTypes.func.isRequired,
   resetTagName: PropTypes.func.isRequired,
-  tagName: PropTypes.string.isRequired,
+  // tagName: PropTypes.string.isRequired,
   fetchListArticlesTag: PropTypes.func.isRequired,
   tags: PropTypes.any.isRequired,
 };
@@ -137,6 +115,7 @@ const mapStateToProps = createStructuredSelector({
   tagName: selectTagName(),
   auth: makeAuth(),
   redirectTo: selectRedirectTo(),
+  loggedIn: selectLoggedIn(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -150,6 +129,7 @@ function mapDispatchToProps(dispatch) {
     resetTagName: () => dispatch(resetTagName()),
     toggleFavorite: (slug, favorited) => dispatch({ type: 'FAVORITE_ARTICLE', slug, favorited }),
     resetRedirectTo: () => dispatch({ type: 'RESET_REDIRECT' }),
+    toggleListArticle: (tab) => dispatch({ type: 'TOGGLE_LIST_ARTICLES', tab }),
     dispatch,
   };
 }
