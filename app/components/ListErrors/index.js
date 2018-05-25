@@ -5,8 +5,7 @@
 */
 
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import PropTypes from 'prop-types';
 
 class ListErrors extends React.Component {  
 

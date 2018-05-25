@@ -24,7 +24,6 @@ class ArticleAction extends React.Component {
 
   render() {
     const { article, currentUser, isModify } = this.props;
-    console.log(this.props.isModify)
     return (
       <div className="article-actions">
         <div className="article-meta">

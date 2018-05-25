@@ -1,24 +1,31 @@
-import axios from 'axios';
 import { takeEvery, call, put } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 import {
   getProfileSuccess,
   getProfileFailure,
   getArticlesByAuthorSuccess,
   getArticlesByAuthorFailure,
+  toggleFollowSuccess,
+  toggleFollowFailure,
+  toggleFavoriteSuccess,
+  toggleFavoriteFailure,
+  toggleArticleByAuthorSuccess,
+  toggleArticleByAuthorFailure,
 } from './actions';
 import {
   GET_PROFILE_BY_AUTHOR,
   GET_ARTICLES_BY_AUTHOR,
   FAVORITE_ARTICLE,
   TOGGLE_FOLLOW,
-  TOGGLE_ARTICLES_SUCCESS,
   TOGGLE_ARTICLES_BY_AUTHOR,
 } from './constants';
 import {
-  getProfile,
-  getArticlesByAuthor
+  getProfileAPI,
+  getArticlesByAuthorAPI,
+  toggleFollowAPI,
+  toggleFavoriteAPI,
+  toggleFetchArticleByAuthorAPI,
 } from '../../utils/api';
-import { push } from 'react-router-redux';
 
 export default function* defaultSaga() {
   yield [
@@ -32,7 +39,7 @@ export default function* defaultSaga() {
 
 function* workerGetProfile(action) {
   try {
-    const response = yield call(getProfile, action.username, action.token);
+    const response = yield call(getProfileAPI, action.username, action.token);
     yield put(getProfileSuccess(response.data));
   } catch (error) {
     if (error.response) {
@@ -42,15 +49,8 @@ function* workerGetProfile(action) {
 }
 
 function* workerGetArticlesByAuthor(action) {
-  const token = window.localStorage.getItem('token');
   try {
-    const response = yield axios({
-      method: 'GET',
-      url: `https://conduit.productionready.io/api/articles/?author=${action.username}&limit=5`,
-      headers: {
-        Authorization: token ? `Token ${token}` : ''
-      }
-    })
+    const response = yield call(getArticlesByAuthorAPI, action.username);
     yield put(getArticlesByAuthorSuccess(response.data));
   } catch (error) {
     if (error.response) {
@@ -62,15 +62,11 @@ function* workerGetArticlesByAuthor(action) {
 function* toggleFetchArticlesByAuthor(action) {
   const token = window.localStorage.getItem('token');
   try {
-    const response = yield axios({
-      method: 'GET',
-      url: `https://conduit.productionready.io/api/articles/?${action.tab}=${action.username}&limit=5`,
-      headers: { Authorization: `Token ${token}` },
-    });
-    yield put({ type: TOGGLE_ARTICLES_SUCCESS, payload: response.data });
+    const response = yield call(toggleFetchArticleByAuthorAPI, action.tab, action.username, token);
+    yield put(toggleArticleByAuthorSuccess(response));
   } catch (error) {
     if (error.response) {
-      yield put({ type: 'TOGGLE_ARTICLES_FAILURE', payload: error.response.data })
+      yield put(toggleArticleByAuthorFailure(error));
     }
   }
 }
@@ -80,18 +76,14 @@ function* favoriteArticle(action) {
   const token = window.localStorage.getItem('token');
   try {
     if (token) {
-      const response = yield axios({
-        method,
-        url: `https://conduit.productionready.io/api/articles/${action.slug}/favorite`,
-        headers: { Authorization: `Token ${token}` },
-      });
-      yield put({ type: 'FAVORITE_IN_PROFILE_SUCCESS', payload: response.data });
+      const response = yield call(toggleFavoriteAPI, action.slug, method, token);
+      yield put(toggleFavoriteSuccess(response));
     } else {
       yield put(push('/signup'));
     }
   } catch (error) {
     if (error.response) {
-      yield put({ type: 'FAVORITE_IN_PROFILE_SUCCESS', payload: error.response.data });
+      yield put(toggleFavoriteFailure(error));
     }
   }
 }
@@ -101,18 +93,14 @@ function* toggleFollow(action) {
   const token = window.localStorage.getItem('token');
   try {
     if (token) {
-      const response = yield axios({
-        method: method,
-        url: `https://conduit.productionready.io/api/profiles/${action.username}/follow`,
-        headers: { Authorization: `Token ${token}` },
-      })
-      yield put({ type: 'TOGGLE_FOLLOW_SUCCESS', payload: response.data });
+      const response = yield call(toggleFollowAPI, method, action.username, token);
+      yield put(toggleFollowSuccess(response));
     } else {
       yield put(push('/signup'));
     }
   } catch (error) {
     if (error.response) {
-      yield put({ type: 'TOGGLE_FOLLOWING_FAILURE', payload: error.response.data })
+      yield put(toggleFollowFailure(error));
     }
   }
 }

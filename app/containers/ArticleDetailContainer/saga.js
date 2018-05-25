@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { takeEvery, put, call } from 'redux-saga/effects';
 import {
   getComments,
@@ -38,7 +37,7 @@ export default function* defaultSaga() {
 function* fetchArticleDetail(action) {
   const token = window.localStorage.getItem('token');
   try {
-    const response = yield call(getArticleDetailAPI, action.slug, token)
+    const response = yield call(getArticleDetailAPI, action.slug, token);
     yield put({
       type: FETCH_ARTICLE_DETAIL_SUCCESS,
       payload: response.data,
@@ -92,8 +91,8 @@ function* toggleFavorite(action) {
       yield put({ type: 'REDIRECT_PAGE' });
     }
   } catch (error) {
-    if (response.error) {
-      yield put({ type: 'FAVORITE_ERROR', payload: error.response.data })
+    if (error.response) {
+      yield put({ type: 'FAVORITE_ERROR', payload: error.response.data });
     }
   }
 }
@@ -131,15 +130,9 @@ function* submitComment(action) {
 function* deleteComment(action) {
   const token = window.localStorage.getItem('token');
   try {
-    const response = yield call(deleteCommentAPI, action.slug, action.id, token);
+    yield call(deleteCommentAPI, action.slug, action.id, token);
     yield put(deleteCommentSuccess(action.id));
   } catch (error) {
     yield put(deleteCommentError(error));
   }
 }
-
-
-
-
-
-

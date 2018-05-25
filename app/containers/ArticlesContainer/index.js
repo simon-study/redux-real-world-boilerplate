@@ -21,15 +21,15 @@ import makeSelectArticlesContainer, {
   selectRedirectTo,
   selectLoggedIn,
   makeAuth,
+  selectTab,
 } from './selectors';
-// import { selectLoggedIn } from '../LoginContainer/selectors';
 import {
   fetchTags,
   getAllArticles,
   setPage,
   fetchListArticlesTag,
   resetTagName,
-  getFeedArticles,
+  // getFeedArticles,
 } from './actions';
 import reducer from './reducer';
 import saga from './saga';
@@ -43,10 +43,12 @@ export class ArticlesContainer extends React.Component {
   componentWillMount() {
     this.props.getAllArticles();
     this.props.fetchTags();
+    // this.props.getTab();
   }
 
   componentWillUnmount() {
     this.props.resetRedirectTo();
+    this.props.resetTagName();
   }
 
   toggleArticleByTab = (e) => {
@@ -56,7 +58,6 @@ export class ArticlesContainer extends React.Component {
   }
 
   render() {
-    console.log(this.props.loggedIn)
     return (
       this.props.redirectTo && this.props.redirectTo.length ? <Redirect to={this.props.redirectTo} /> :
       <div className="row">
@@ -67,6 +68,7 @@ export class ArticlesContainer extends React.Component {
               resetTagName={this.props.resetTagName}
               tagName={this.props.tagName}
               loggedIn={this.props.loggedIn}
+              tab={this.props.tab}
             />
           </div>
 
@@ -93,17 +95,20 @@ export class ArticlesContainer extends React.Component {
 }
 
 ArticlesContainer.propTypes = {
-  getAllArticles: PropTypes.func.isRequired,
-  getFeedArticles: PropTypes.func.isRequired,
-  setPage: PropTypes.func.isRequired,
-  // articles: PropTypes.any.isRequired,
-  currentPage: PropTypes.number.isRequired,
-  // articlesCount: PropTypes.number.isRequired,
-  fetchTags: PropTypes.func.isRequired,
-  resetTagName: PropTypes.func.isRequired,
-  // tagName: PropTypes.string.isRequired,
-  fetchListArticlesTag: PropTypes.func.isRequired,
-  tags: PropTypes.any.isRequired,
+  getAllArticles: PropTypes.func,
+  articlesCount: PropTypes.number,
+  setPage: PropTypes.func,
+  currentPage: PropTypes.number,
+  fetchTags: PropTypes.func,
+  resetTagName: PropTypes.func,
+  fetchListArticlesTag: PropTypes.func,
+  tags: PropTypes.any,
+  redirectTo: PropTypes.string,
+  toggleFavorite: PropTypes.func,
+  toggleListArticle: PropTypes.func,
+  loggedIn: PropTypes.bool,
+  articles: PropTypes.any,
+  tab: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -116,14 +121,14 @@ const mapStateToProps = createStructuredSelector({
   auth: makeAuth(),
   redirectTo: selectRedirectTo(),
   loggedIn: selectLoggedIn(),
+  tab: selectTab(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchTags: () => dispatch(fetchTags()),
     getAllArticles: () => dispatch(getAllArticles()),
-    // getFeedArticles: () => console.log('feed'),
-    getFeedArticles: () => dispatch({ type: 'GET_FEED_ARTICLES' }),
+    // getFeedArticles: () => dispatch({ type: 'GET_FEED_ARTICLES' }),
     setPage: (page) => dispatch(setPage(page)),
     fetchListArticlesTag: (tag) => dispatch(fetchListArticlesTag(tag)),
     resetTagName: () => dispatch(resetTagName()),

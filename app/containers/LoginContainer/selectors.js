@@ -16,7 +16,7 @@ const selectLoggedIn = () => createSelector(
 );
 
 const selectErrors = () => createSelector(
-  selectLoginContainerDomain,
+  makeSelectLoginContainer(),
   (substate) => substate.errors
 );
 

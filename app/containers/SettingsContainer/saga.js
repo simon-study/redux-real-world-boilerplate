@@ -1,13 +1,15 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 import { updateProfile } from '../../utils/api';
 import {
-  LOGIN_SUCCESS,
   LOGOUT_REQUEST,
-  LOGOUT_SUCCESS,
   UPDATE_PROFILE,
-  UPDATE_PROFILE_SUCCESS,
-  UPDATE_PROFILE_FAILURE,
 } from './constants';
+import {
+  logoutSuccess,
+  updateCurrentUser,
+  updateProfileSuccess,
+  updateProfileFailure,
+} from './actions';
 
 // Individual exports for testing
 export default function* defaultSaga() {
@@ -19,7 +21,7 @@ export default function* defaultSaga() {
 
 function* logoutRequest() {
   window.localStorage.removeItem('token');
-  yield put({ type: LOGOUT_SUCCESS });
+  yield put(logoutSuccess());
 }
 
 function* workerUpdateProfile(action) {
@@ -27,12 +29,12 @@ function* workerUpdateProfile(action) {
   try {
     const response = yield call(updateProfile, action.user, token);
     if (response.status >= 200 && response.status < 300) {
-      yield put({ type: LOGIN_SUCCESS, payload: response.data });
-      yield put({ type: UPDATE_PROFILE_SUCCESS, payload: response.data });
+      yield put(updateCurrentUser(response));
+      yield put(updateProfileSuccess(response));
     }
   } catch (error) {
     if (error.response) {
-      yield put({ type: UPDATE_PROFILE_FAILURE, payload: error.response.data });
+      yield put(updateProfileFailure(error));
     }
   }
 }

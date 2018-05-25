@@ -1,21 +1,18 @@
-import axios from 'axios';
 import { takeEvery, put, call } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 import {
   FETCH_DATA,
   FETCH_TAGS,
   FETCH_ARTICLES_OFFSET,
   FETCH_ARTICLES_TAGS,
   FAVORITE_ARTICLE,
-  GET_FEED_ARTICLES,
-  FETCH_DATA_SUCCESS,
-  FETCH_DATA_FAILURE,
-  FETCH_TAGS_SUCCESS,
-  FETCH_TAGS_FAILURE,
   FETCH_ARTICLES_OFFSET_SUCCESS,
   FETCH_ARTICLES_OFFSET_FAILURE,
   FETCH_ARTICLES_TAG_SUCCESS,
   FETCH_ARTICLES_TAG_FAILURE,
+  TOGGLE_LIST_ARTICLES,
 } from './constants';
+
 import {
   getTags,
   getArticlesWithTag,
@@ -24,10 +21,13 @@ import {
   toggleFavoriteAPI,
   getListFeed,
 } from '../../utils/api';
+
 import {
-  redirectToSignUp,
+  fetchTagsSuccess,
+  fetchTagsFailure,
+  favoriteSuccess,
+  favoriteFailure,
 } from './actions';
-import { push } from 'react-router-redux';
 
 export default function* watcherFetchArticles() {
   yield [
@@ -36,7 +36,7 @@ export default function* watcherFetchArticles() {
     takeEvery(FETCH_ARTICLES_OFFSET, workerFetchArticlesWithOffset),
     takeEvery(FETCH_ARTICLES_TAGS, fetchArticlesTags),
     takeEvery(FAVORITE_ARTICLE, favoriteArticle),
-    takeEvery('TOGGLE_LIST_ARTICLES', workerToggleListArticle),
+    takeEvery(TOGGLE_LIST_ARTICLES, workerToggleListArticle),
   ];
 }
 
@@ -49,10 +49,10 @@ function* fetchArticles() {
     } else {
       response = yield call(getArticlesAPI, token);
     }
-    yield put({ type: FETCH_DATA_SUCCESS, payload: response.data });
+    yield put({ type: 'FETCH_DATA_SUCCESS', payload: response.data });
   } catch (error) {
     if (error.response) {
-      yield put({ type: FETCH_DATA_FAILURE, payload: error.response.data });
+      yield put({ type: 'FETCH_DATA_FAILURE', payload: error.response.data });
     }
   }
 }
@@ -60,10 +60,10 @@ function* fetchArticles() {
 function* fetchTags() {
   try {
     const response = yield call(getTags);
-    yield put({ type: FETCH_TAGS_SUCCESS, payload: response.data });
+    yield put(fetchTagsSuccess(response));
   } catch (error) {
     if (error.response) {
-      yield put({ type: FETCH_TAGS_FAILURE, payload: error.response.data });
+      yield put(fetchTagsFailure(error));
     }
   }
 }
@@ -80,7 +80,10 @@ function* workerFetchArticlesWithOffset(action) {
     });
   } catch (error) {
     if (error.response) {
-      yield put({ type: FETCH_ARTICLES_OFFSET_FAILURE, payload: error.response.data });
+      yield put({
+        type: FETCH_ARTICLES_OFFSET_FAILURE,
+        payload: error.response.data,
+      });
     }
   }
 }
@@ -108,13 +111,13 @@ function* favoriteArticle(action) {
   try {
     if (token) {
       const response = yield call(toggleFavoriteAPI, action.slug, method, token);
-      yield put({ type: 'FAVORITE_SUCCESS', payload: response.data });
+      yield put(favoriteSuccess(response));
     } else {
-      yield put(push("/signup"));
+      yield put(push('/signup'));
     }
   } catch (error) {
     if (error.response) {
-      yield put({ type: 'FAVORITE_ERROR', payload: error.response.data });
+      yield put(favoriteFailure(error));
     }
   }
 }
@@ -128,10 +131,14 @@ function* workerToggleListArticle(action) {
     } else {
       response = yield call(getArticlesAPI, token);
     }
+    yield put({ type: 'SET_TAB', payload: action.tab });
     yield put({ type: 'GET_LIST_ARTICLE_SUCCESS', payload: response.data });
   } catch (error) {
     if (error.response) {
-      yield put({ type: 'GET_LIST_ARTICLE_FAILURE', payload: error.response.data })
+      yield put({
+        type: 'GET_LIST_ARTICLE_FAILURE',
+        payload: error.response.data,
+      });
     }
   }
 }

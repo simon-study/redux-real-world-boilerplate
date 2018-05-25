@@ -10,7 +10,6 @@ import {
   CHANGE_BODY,
   CHANGE_TAG,
   ADD_TAG,
-  RESET_TAG,
   NEW_ARTICLE,
   RESET_NEW_ARTICLE,
 } from './constants';
@@ -18,7 +17,7 @@ import {
 export function changeTitle(title) {
   return {
     type: CHANGE_TITLE,
-    title
+    title,
   };
 }
 
@@ -67,12 +66,12 @@ export function newArticleSuccess(response) {
   return {
     type: 'NEW_ARTICLE_SUCCESS',
     payload: response.data,
-  }
+  };
 }
 
 export function newArticleFailure(error) {
   return {
     type: 'NEW_ARTICLE_FAILURE',
-    payload: error.response.data
-  }
+    payload: error.response.data,
+  };
 }

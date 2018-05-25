@@ -43,33 +43,17 @@ export class ArticleDetailContainer extends React.Component {
     this.props.resetComments();
   }
 
-  isEmpty = (obj) => {
-    return Object.keys(obj).length === 0;
-  };
+  isEmpty = (obj) => Object.keys(obj).length === 0;
 
   render() {
-    const { article, currentUser, comments } = this.props
+    const { article, currentUser } = this.props;
     const checkEmptyArticle = this.isEmpty(article);
     const checkEmptyCurrentUser = this.isEmpty(currentUser);
     const isModify = !checkEmptyArticle && !checkEmptyCurrentUser && currentUser.username === article.author.username;
 
     return (
-      this.props.redirectTo.length ? 
+      this.props.redirectTo.length ?
       <Redirect to={this.props.redirectTo} /> :
-      // <ArticleDetail
-      //   article={article}
-      //   comments={comments}
-      //   currentUser={currentUser}
-      //   deleteArticle={this.props.deleteArticle}
-      //   isModify={isModify}
-      //   toggleFavorite={this.props.toggleFavorite}
-      //   toggleFollow={this.props.toggleFollow}
-      //   loggedIn={this.props.loggedIn}
-      //   submitComment={this.props.submitComment}
-      //   slug={this.props.match.params.slug}
-      //   onDeleteComment={this.props.onDeleteComment}
-      // />
-      // (!this.props.isLoading ? <ArticleDetail {...this.props} slug={this.props.match.params.slug} /> : <div>Loading</div>)
       <ArticleDetail {...this.props} slug={this.props.match.params.slug} isModify={isModify} />
     );
   }
@@ -84,7 +68,7 @@ ArticleDetailContainer.propTypes = {
   article: PropTypes.any.isRequired,
   currentUser: PropTypes.object.isRequired,
   redirectTo: PropTypes.string.isRequired,
-  deleteArticle: PropTypes.func.isRequired,
+  resetComments: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

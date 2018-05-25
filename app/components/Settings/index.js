@@ -6,7 +6,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import messages from './messages';
 import ListErrors from '../ListErrors';
 
 class Settings extends React.Component {
@@ -46,9 +45,7 @@ class Settings extends React.Component {
     this.props.updateProfile(user);
   }
 
-  isEmpty = (obj) => {
-    return Object.keys(obj).length === 0;
-  };
+  isEmpty = (obj) => Object.keys(obj).length === 0;
 
   render() {
     const {
@@ -57,7 +54,7 @@ class Settings extends React.Component {
       bio,
       email,
       password,
-      errors
+      errors,
     } = this.state;
     const checkErrors = this.isEmpty(this.props.errors);
     return (
@@ -150,6 +147,8 @@ class Settings extends React.Component {
 Settings.propTypes = {
   updateProfile: PropTypes.func.isRequired,
   currentUser: PropTypes.object.isRequired,
+  onClickLogout: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 export default Settings;

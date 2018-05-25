@@ -11,6 +11,8 @@ import {
   RESET_COMMENTS,
   DELETE_ARTICLE,
   SUBMIT_COMMENT_SUCCESS,
+  SUBMIT_COMMENT_FAILURE,
+  DELETE_COMMENT_SUCCESS,
 } from './constants';
 
 export function fetchArticleDetail(slug) {
@@ -42,26 +44,26 @@ export function resetComments() {
 export function deleteArticle(slug) {
   return {
     type: DELETE_ARTICLE,
-    slug
+    slug,
   };
 }
 
 export const submitCommentSuccess = (response) => ({
   type: SUBMIT_COMMENT_SUCCESS,
-  payload: response.data
+  payload: response.data,
 });
 
 export const submitCommentError = (error) => ({
-  type: 'SUBMIT_COMMENT_FAILURE', 
-  payload: error.response.data
-})
+  type: SUBMIT_COMMENT_FAILURE,
+  payload: error.response.data,
+});
 
 export const deleteCommentSuccess = (id) => ({
-  type: 'DELETE_COMMENT_SUCCESS',
-  payload: id
-})
+  type: DELETE_COMMENT_SUCCESS,
+  payload: id,
+});
 
 export const deleteCommentError = (error) => ({
-  type: 'DELETE_COMMENT_FAILURE',
-  payload: error.response.data
-})
+  type: DELETE_COMMENT_FAILURE,
+  payload: error.response.data,
+});

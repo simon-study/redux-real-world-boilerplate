@@ -33,11 +33,11 @@ export class SettingsContainer extends React.Component {
     if (!this.props.loggedIn.loggedIn) {
       return <Redirect to={'/'} />;
     }
-    
+
     if (this.props.redirect.length) {
-      return <Redirect to={`${this.props.redirect}`} />
+      return <Redirect to={`${this.props.redirect}`} />;
     }
-    
+
     return (
       <Settings
         errors={this.props.errors}
@@ -50,8 +50,13 @@ export class SettingsContainer extends React.Component {
 }
 
 SettingsContainer.propTypes = {
-  loggedIn: PropTypes.any.isRequired,
-  handleLogout: PropTypes.func.isRequired,
+  loggedIn: PropTypes.any,
+  handleLogout: PropTypes.func,
+  currentUser: PropTypes.object,
+  updateProfile: PropTypes.func,
+  errors: PropTypes.object,
+  redirect: PropTypes.string,
+  resetErrors: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({

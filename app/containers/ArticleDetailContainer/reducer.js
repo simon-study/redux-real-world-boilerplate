@@ -14,7 +14,6 @@ import {
   RESET_COMMENTS,
   DELETE_ARTICLE_SUCCESS,
   REDIRECT_PAGE,
-  FAVORITE_ON_ARTICLE_DETAIL_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -57,7 +56,7 @@ function articleDetailContainerReducer(state = initialState, action) {
     case 'SUBMIT_COMMENT_SUCCESS':
       return state.updateIn(['comments'], arr => arr.push(action.payload.comment));
     case 'DELETE_COMMENT_SUCCESS':
-      return state.set('comments', state.get('comments').filter(item => item.id !== action.payload))
+      return state.set('comments', state.get('comments').filter(item => item.id !== action.payload));
     default:
       return state;
   }

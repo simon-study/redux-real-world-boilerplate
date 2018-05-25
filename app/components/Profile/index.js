@@ -11,14 +11,13 @@ import ArticleList from '../ArticleList';
 
 class Profile extends React.Component {
   onToggleFollow = () => {
-    const {username, following} = this.props.profile;
-    this.props.handleToggleFollow(username, following)
+    const { username, following } = this.props.profile;
+    this.props.handleToggleFollow(username, following);
   }
 
   toggleTab = (e) => {
     const tab = e.target.dataset.tab;
     const { username } = this.props.profile;
-    console.log(tab, username);
     this.props.toggleArticleByAuthor(tab, username);
   }
 
@@ -37,20 +36,23 @@ class Profile extends React.Component {
                 }
                 {
                   this.props.currentUser.username === this.props.profile.username ?
-                  <NavLink to="/settings" className="btn btn-sm btn-outline-secondary action-btn">
-                    <i className="ion-gear-a"></i>&nbsp;Edit Profile Settings
-                  </NavLink>
-                  :
-                  <button 
-                    className="btn btn-sm btn-outline-secondary action-btn"
-                    onClick={this.onToggleFollow}
-                  >
-                    <i className="ion-plus-round"></i>
-                    &nbsp;
-                    { following ? 'Unfollow' : 'Follow' }
-                    &nbsp;
-                    { username }
-                  </button>
+                    <NavLink
+                      to="/settings"
+                      className="btn btn-sm btn-outline-secondary action-btn"
+                    >
+                      <i className="ion-gear-a"></i>&nbsp;Edit Profile Settings
+                    </NavLink>
+                    :
+                    <button
+                      className="btn btn-sm btn-outline-secondary action-btn"
+                      onClick={this.onToggleFollow}
+                    >
+                      <i className="ion-plus-round"></i>
+                      &nbsp;
+                      { following ? 'Unfollow' : 'Follow' }
+                      &nbsp;
+                      { username }
+                    </button>
                 }
               </div>
 
@@ -65,8 +67,10 @@ class Profile extends React.Component {
               <div className="articles-toggle">
                 <ul className="nav nav-pills outline-active">
                   <li className="nav-item">
-                    <NavLink to={`/profile/@${username}`}
-                      exact className='nav-link'
+                    <NavLink
+                      exact
+                      to={`/profile/@${username}`}
+                      className="nav-link"
                       data-tab="author"
                       onClick={this.toggleTab}
                     >
@@ -76,7 +80,7 @@ class Profile extends React.Component {
                   <li className="nav-item">
                     <NavLink
                       to={`/profile/@${username}/favorites`}
-                      className='nav-link'
+                      className="nav-link"
                       data-tab="favorited"
                       onClick={this.toggleTab}
                     >
@@ -103,6 +107,9 @@ class Profile extends React.Component {
 Profile.propTypes = {
   profile: PropTypes.object.isRequired,
   articlesByAuthor: PropTypes.array.isRequired,
+  toggleFavorite: PropTypes.func.isRequired,
+  handleToggleFollow: PropTypes.func.isRequired,
+  currentUser: PropTypes.object.isRequired,
 };
 
 export default Profile;

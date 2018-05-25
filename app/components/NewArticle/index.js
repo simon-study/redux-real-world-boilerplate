@@ -17,7 +17,7 @@ class NewArticle extends React.Component {
       body: '',
       tag: '',
       tagList: [],
-    }
+    };
   }
   componentWillUnmount() {
     this.props.resetArticle();
@@ -45,10 +45,10 @@ class NewArticle extends React.Component {
     this.setState((previousState) => {
       return {
         tagList: previousState.tagList.filter(item => {
-          return item !== tag
-        })
-      }
-    })
+          return item !== tag;
+        }),
+      };
+    });
   }
 
   onSubmit = (e) => {
@@ -59,7 +59,7 @@ class NewArticle extends React.Component {
       description,
       body,
       tagList,
-    }
+    };
     this.props.submitForm(article);
   }
 
@@ -70,12 +70,12 @@ class NewArticle extends React.Component {
   render() {
     const { title, description, body, tag, tagList } = this.state;
     return (
-      !this.isEmpty(this.props.article) ? <Redirect to={`/article/${this.props.article.slug}`}/> :
+      !this.isEmpty(this.props.article) ? <Redirect to={`/article/${this.props.article.slug}`} /> :
       <div className="editor-page">
         <div className="container page">
           <div className="row">
             <div className="col-md-10 offset-md-1 col-xs-12">
-              <ListErrors errors={this.props.errors}/>
+              <ListErrors errors={this.props.errors} />
               <form>
                 <fieldset>
                   <fieldset className="form-group">
@@ -99,7 +99,7 @@ class NewArticle extends React.Component {
                     />
                   </fieldset>
                   <fieldset className="form-group">
-                    <textarea 
+                    <textarea
                       className="form-control"
                       rows="8"
                       placeholder="Write your article (in markdown)"
@@ -122,20 +122,20 @@ class NewArticle extends React.Component {
                       {
                         tagList && tagList.length > 0 && tagList.map(tag => {
                           return (
-                            <span className="tag-default tag-pill" key={tag} >
-                              <i  className="ion-close-round" onClick={() => this.onDeleteTag(tag)}>
-                              </i>
-                              {tag}
+                            <span className="tag-default tag-pill" key={itemTag} >
+                              <i className="ion-close-round" onClick={() => this.onDeleteTag(itemTag)}></i>
+                              {itemTag}
                             </span>
                           );
                         })
                       }
-                    </div> 
+                    </div>
                   </fieldset>
                   <button
                     className="btn btn-lg pull-xs-right btn-primary"
                     type="button"
-                    onClick={this.onSubmit}>
+                    onClick={this.onSubmit}
+                  >
                     Publish Article
                   </button>
                 </fieldset>
@@ -151,14 +151,8 @@ class NewArticle extends React.Component {
 
 NewArticle.propTypes = {
   resetArticle: PropTypes.func.isRequired,
-  changeTitle: PropTypes.func.isRequired,
-  changeDescription: PropTypes.func.isRequired,
-  changeBody: PropTypes.func.isRequired,
-  changeTag: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  tag: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired,
+  errors: PropTypes.object.isRequired,
+  article: PropTypes.object.isRequired,
 };
 
 export default NewArticle;

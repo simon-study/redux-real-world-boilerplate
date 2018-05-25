@@ -5,9 +5,9 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Redirect } from 'react-router-dom';
 import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
@@ -16,21 +16,18 @@ import makeSelectSignUpContainer, { makeSelectLoggedIn, makeSelectError } from '
 import reducer from './reducer';
 import saga from './saga';
 import SignUp from '../../components/SignUp';
-import { Redirect } from 'react-router-dom';
 
-export class SignUpContainer extends React.Component {
-  render() {
-    return (
-      this.props.loggedIn ? <Redirect to="/" /> :
-      <SignUp errors={this.props.errors}
-        submitRegister={(name, email, password) => this.props.submitRegister(name, email, password)}
-      />
-    );
-  }
-}
-
-SignUpContainer.propTypes = {
+const SignUpContainer = () => {
+  return (
+    this.props.loggedIn ? <Redirect to="/" /> :
+    <SignUp
+      errors={this.props.errors}
+      submitRegister={(name, email, password) => this.props.submitRegister(name, email, password)}
+    />
+  );
 };
+
+SignUpContainer.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   signupcontainer: makeSelectSignUpContainer(),

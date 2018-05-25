@@ -67,6 +67,11 @@ class Comment extends React.Component {
 
 Comment.propTypes = {
   comments: PropTypes.any.isRequired,
+  slug: PropTypes.string.isRequired,
+  onDeleteComment: PropTypes.func.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  submitComment: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
 };
 
 export default Comment;

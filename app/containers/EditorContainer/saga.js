@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { newArticleAPi } from '../../utils/api';
 import { newArticleFailure, newArticleSuccess } from './actions';

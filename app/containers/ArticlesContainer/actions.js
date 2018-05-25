@@ -6,12 +6,15 @@
 
 import {
   FETCH_TAGS,
+  FETCH_TAGS_SUCCESS,
+  FETCH_TAGS_FAILURE,
   FETCH_DATA,
   FETCH_ARTICLES_OFFSET,
   FETCH_ARTICLES_TAGS,
   RESET_TAGNAME,
   GET_FEED_ARTICLES,
-  REDIRECT_TO_SIGNUP,
+  FAVORITE_SUCCESS,
+  FAVORITE_FAILURE,
 } from './constants';
 
 export function fetchTags() {
@@ -52,8 +55,30 @@ export function resetTagName() {
   };
 }
 
-// export function redirectToSignUp() {
-//   return {
-//     type: REDIRECT_TO_SIGNUP,
-//   };
-// }
+export function favoriteSuccess(response) {
+  return {
+    type: FAVORITE_SUCCESS,
+    payload: response.data,
+  };
+}
+
+export function favoriteFailure(error) {
+  return {
+    type: FAVORITE_FAILURE,
+    payload: error.response.data,
+  };
+}
+
+export function fetchTagsSuccess(response) {
+  return {
+    type: FETCH_TAGS_SUCCESS,
+    payload: response.data,
+  };
+}
+
+export function fetchTagsFailure(error) {
+  return {
+    type: FETCH_TAGS_FAILURE,
+    payload: error.response.data,
+  };
+}

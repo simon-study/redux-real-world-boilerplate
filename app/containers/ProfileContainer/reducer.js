@@ -16,7 +16,7 @@ import {
 
 const initialState = fromJS({
   profile: {},
-  error: '',
+  errors: {},
   articlesByAuthor: [],
   articlesCountByAuthor: 0,
   redirectTo: '',
@@ -27,12 +27,12 @@ function profileContainerReducer(state = initialState, action) {
     case GET_PROFILE_SUCCESS:
       return state.set('profile', fromJS(action.payload.profile));
     case GET_PROFILE_FAILURE:
-      return state.set('error', action.payload);
+      return state.set('errors', action.payload);
     case GET_ARTICLES_BY_AUTHOR_SUCCESS:
       return state.set('articlesByAuthor', action.payload.articles)
                   .set('articlesCountByAuthor', action.payload.articlesCount);
     case GET_ARTICLES_BY_AUTHOR_FAILURE:
-      return state.set('error', action.payload);
+      return state.set('errors', action.payload);
     case RESET_PROFILE_BY_AUTHOR:
       return state.set('profile', {});
     case RESET_ARTICLES_BY_AUTHOR:
@@ -55,8 +55,7 @@ function profileContainerReducer(state = initialState, action) {
     case 'REDIRECT_PAGE':
       return state.set('redirectTo', '/signup');
     case 'TOGGLE_ARTICLES_SUCCESS':
-    console.log(action.payload.articles)
-      return state.set('articlesByAuthor', action.payload.articles)
+      return state.set('articlesByAuthor', action.payload.articles);
     default:
       return state;
   }

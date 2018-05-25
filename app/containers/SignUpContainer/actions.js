@@ -5,11 +5,20 @@
  */
 
 import {
-  DEFAULT_ACTION,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
 } from './constants';
 
-export function defaultAction() {
+export function registerSuccess(response) {
   return {
-    type: DEFAULT_ACTION,
+    type: REGISTER_SUCCESS,
+    payload: response.data,
+  };
+}
+
+export function registerFailure(error) {
+  return {
+    type: REGISTER_FAILURE,
+    payload: error.response.data,
   };
 }

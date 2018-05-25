@@ -16,6 +16,10 @@ import {
   FETCH_TAGS_FAILURE,
   RESET_TAGNAME,
   REDIRECT_TO_SIGNUP,
+  FAVORITE_SUCCESS,
+  RESET_REDIRECT,
+  GET_LIST_ARTICLE_SUCCESS,
+  SET_TAB,
 } from './constants';
 
 const initialState = fromJS({
@@ -27,6 +31,7 @@ const initialState = fromJS({
   error: null,
   tagName: '',
   redirectTo: '',
+  tab: window.localStorage.getItem('token') ? 'feed' : 'all',
 });
 
 function testReducer(state = initialState, action) {
@@ -48,7 +53,7 @@ function testReducer(state = initialState, action) {
       return state.set('tags', action.payload.tags);
     case FETCH_TAGS_FAILURE:
       return state.set('error', action.payload.error);
-    case 'FAVORITE_SUCCESS':
+    case FAVORITE_SUCCESS:
       const responseArticle = action.payload.article;
       const newArticles = state.get('articles').map(article => {
         if (article.slug === responseArticle.slug) {
@@ -66,21 +71,23 @@ function testReducer(state = initialState, action) {
         .set('articles', action.payload.data.articles)
         .set('articlesCount', action.payload.data.articlesCount)
         .set('currentPage', 0)
-        .set('tagName', action.payload.tagName);
+        .set('tagName', action.payload.tagName)
+        .set('tab', '');
     case FETCH_ARTICLES_TAG_FAILURE:
       return state.set('error', action.payload.error);
     case RESET_TAGNAME:
-      return state.set('tagName', null);
-    case 'REDIRECT_TO_SIGNUP':
+      return state.set('tagName', '');
+    case REDIRECT_TO_SIGNUP:
       return state.set('redirectTo', '/signup');
-    case 'RESET_REDIRECT':
+    case RESET_REDIRECT:
       return state.set('redirectTo', '');
-    case 'GET_LIST_ARTICLE_SUCCESS':
-    console.log(action.payload)
+    case GET_LIST_ARTICLE_SUCCESS:
       return state
         .set('articles', action.payload.articles)
         .set('articlesCount', action.payload.articlesCount)
         .set('currentPage', 0);
+    case SET_TAB:
+      return state.set('tab', action.payload);
     default:
       return state;
   }

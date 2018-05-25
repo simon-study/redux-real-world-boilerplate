@@ -25,7 +25,7 @@ export class LoginContainer extends React.Component {
       <Redirect to={'/'} /> :
       <SignIn
         handleLogin={(email, password) => this.props.handleLogin(email, password)}
-        errors={this.props.logincontainer.errors}
+        errors={this.props.errors}
       />
     );
   }
@@ -37,7 +37,7 @@ LoginContainer.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  logincontainer: makeSelectLoginContainer(),
+  loginContainer: makeSelectLoginContainer(),
   loggedIn: selectLoggedIn(),
   errors: selectErrors(),
 });

@@ -5,53 +5,40 @@ import {
   DEFAULT_OFFSET,
 } from './constants';
 
-// export function getArticles() {
-//   return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}`);
-// }
+export const getTags = () => axios.get(`${API_ROOT}/tags`);
 
-// export function getArticlesWithAuth(token) {
-//   return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}`, {
-//     headers: { Authorization: `Token ${token}` },
-//   });
-// }
+export const getComments = (slug) => axios.get(`${API_ROOT}/articles/${slug}/comments`);
+
+export const getArticlesWithTag = (tag) => axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}&offset=${DEFAULT_OFFSET}&tag=${tag}`);
+
+export const getProfileAPI = (username) => axios.get(`${API_ROOT}/profiles/${username}`);
+
+export const getArticlesByAuthorAPI = (username) => axios.get(`${API_ROOT}/articles/?author=${username}&limit=5`);
 
 export const getArticlesAPI = (token) => {
-  return axios({
+  const options = {
     method: 'GET',
     url: `${API_ROOT}/articles?limit=${DEFAULT_LIMIT}`,
-    headers: { Authorization: token ? `Token ${token}` : '' },
-  });
-}
+    headers: {
+      Authorization: token ? `Token ${token}` : '',
+    },
+  };
+  return axios(options);
+};
 
-// export function getArticle(slug) {
-//   return axios.get(`${API_ROOT}/articles/${slug}`);
-// }
+export const getArticlesWithOffset = (page) => {
+  const options = {
+    method: 'GET',
+    url: `${API_ROOT}/articles`,
+    params: {
+      limit: DEFAULT_LIMIT,
+      offset: DEFAULT_LIMIT * page,
+    },
+  };
+  return axios(options);
+};
 
-export function getTags() {
-  return axios.get(`${API_ROOT}/tags`);
-}
-
-export function getComments(slug) {
-  return axios.get(`${API_ROOT}/articles/${slug}/comments`);
-}
-
-export function getArticlesWithTag(tag) {
-  return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}&offset=${DEFAULT_OFFSET}&tag=${tag}`);
-}
-
-export function getArticlesWithOffset(page) {
-  return axios.get(`${API_ROOT}/articles?limit=${DEFAULT_LIMIT}&offset=${DEFAULT_LIMIT * page}`);
-}
-
-export function getProfile(username) {
-  return axios.get(`${API_ROOT}/profiles/${username}`);
-}
-
-export function getArticlesByAuthor(username) {
-  return axios.get(`${API_ROOT}/articles/?author=${username}&limit=5`);
-}
-
-export function register(username, email, password) {
+export function registerAPI(username, email, password) {
   return axios.post(`${API_ROOT}/users/`, {
     user: {
       username,
@@ -61,102 +48,137 @@ export function register(username, email, password) {
   });
 }
 
-export function login(email, password) {
-  return axios.post(`${API_ROOT}/users/login`, {
-    user: {
-      email,
-      password,
+export const login = (email, password) => {
+  const options = {
+    method: 'POST',
+    url: `${API_ROOT}/users/login`,
+    data: {
+      user: {
+        email,
+        password,
+      },
     },
-  });
-}
+  };
+  return axios(options);
+};
 
-export function updateProfile(user, token) {
-  return axios.put(`${API_ROOT}/user`,
-    { user },
-    { headers: { Authorization: `Token ${token}` } }
-  );
-}
-
+export const updateProfile = (user, token) => {
+  const options = {
+    method: 'PUT',
+    url: `${API_ROOT}/user`,
+    data: { user },
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  };
+  return axios(options);
+};
 
 export const followRequest = (method, username, token) => {
-  return axios({
+  const options = {
     method,
     url: `${API_ROOT}/profiles/${username}/follow`,
     headers: {
-      Authorization: `Token ${token}`
+      Authorization: `Token ${token}`,
     },
-  })
-}
+  };
+  return axios(options);
+};
 
 export const toggleFavoriteAPI = (slug, method, token) => {
-  return axios({
+  const options = {
     method,
     url: `${API_ROOT}/articles/${slug}/favorite`,
     headers: {
-      Authorization: `Token ${token}`
+      Authorization: `Token ${token}`,
     },
-  });
-}
-
-// Comments
+  };
+  return axios(options);
+};
 
 export const postComment = (slug, body, token) => {
-  return axios({
+  const options = {
     method: 'POST',
     url: `${API_ROOT}/articles/${slug}/comments`,
     data: {
-      comment: {
-        body
-      }
+      comment: { body },
     },
     headers: {
-      Authorization: `Token ${token}`
+      Authorization: `Token ${token}`,
     },
-  });
-}
+  };
+  return axios(options);
+};
 
 export const deleteCommentAPI = (slug, id, token) => {
-  return axios({
+  const options = {
     method: 'DELETE',
     url: `${API_ROOT}/articles/${slug}/comments/${id}`,
     headers: { Authorization: `Token ${token}` },
-  });
-}
+  };
+  return axios(options);
+};
 
-// Article
 export const deleteArticleAPI = (slug, token) => {
-  return axios({
+  const options = {
     method: 'DELETE',
     url: `${API_ROOT}/articles/${slug}`,
     headers: { Authorization: `Token ${token}` },
-  });
-}
+  };
+  return axios(options);
+};
 
 export const getArticleDetailAPI = (slug, token) => {
-  return axios({
+  const options = {
     method: 'GET',
     url: `${API_ROOT}/articles/${slug}`,
     headers: { Authorization: token ? `Token ${token}` : '' },
-  });
-}
+  };
+  return axios(options);
+};
 
 export const newArticleAPi = (article, token) => {
-  return axios({
+  const options = {
     method: 'POST',
     url: `${API_ROOT}/articles`,
     headers: { authorization: `Token ${token}` },
     data: {
-      article
+      article,
     },
-  });
-}
+  };
+  return axios(options);
+};
 
 export const getListFeed = (token) => {
-  return axios({
+  const options = {
     method: 'GET',
-    url: `${API_ROOT}/articles/feed?limit=${DEFAULT_LIMIT}`,
-    headers: { authorization: token ? `Token ${token}` : '' },
-  })
-}
+    url: `${API_ROOT}/articles/feed?`,
+    params: {
+      limit: DEFAULT_LIMIT,
+    },
+    headers: {
+      authorization: token ? `Token ${token}` : '',
+    },
+  };
+  return axios(options);
+};
 
+export const toggleFollowAPI = (method, username, token) => {
+  const options = {
+    method,
+    url: `${API_ROOT}/profiles/${username}/follow`,
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  };
+  return axios(options);
+};
 
+export const toggleFetchArticleByAuthorAPI = (tab, username, token) => {
+  const options = {
+    method: 'GET',
+    url: `${API_ROOT}/articles/?${tab}=${username}&limit=5`,
+    headers: { Authorization: `Token ${token}` },
+  };
+  return axios(options);
+};

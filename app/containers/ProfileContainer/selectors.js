@@ -12,8 +12,8 @@ const makeSelectProfileContainer = () => createSelector(
 );
 
 const makeSelectError = () => createSelector(
-  selectProfileContainerDomain,
-  (substate) => substate.get('error')
+  makeSelectProfileContainer(),
+  (substate) => substate.errors
 );
 
 const makeSelectProfile = () => createSelector(
@@ -55,5 +55,5 @@ export {
   makeSelectArticlesCountByAuthor,
   makeSelectAuth,
   selectCurrentUser,
-  selectRedirect
+  selectRedirect,
 };
